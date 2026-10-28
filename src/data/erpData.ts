@@ -1,526 +1,376 @@
-import { ProductItem, IndustryItem, CaseStudy, PricingTier, ComparisonRow } from '../types';
+/**
+ * SISCOM Enterprise ERP Master Dataset
+ * Structured for AstroWind architecture and high-authority enterprise positioning
+ */
+
+export interface EnterpriseModule {
+  id: string;
+  name: string;
+  category: string;
+  badge?: string;
+  tagline: string;
+  summary: string;
+  keyWorkflows: string[];
+  operationalCapabilities: {
+    title: string;
+    description: string;
+  }[];
+  systemMetrics: {
+    label: string;
+    value: string;
+  }[];
+}
+
+export interface EnterpriseFeature {
+  id: string;
+  title: string;
+  description: string;
+  highlight: string;
+}
 
 export const VERIFIED_CONTACTS = {
   companyName: 'PT. Shan Informasi Sistem',
   brandName: 'SISCOM ERP',
   foundingYear: 1994,
-  verifiedClientsCount: '1.000+', // [PERLU DATA DARI SISCOM: angka terverifikasi resmi per audit 2024]
-  primarySalesPhone: '0812-9981-7515', // Official verified sales WhatsApp / Call
-  secondarySupportPhone: '0813-8133-3515', // Official verified customer support hotline
+  primarySalesPhone: '0812-9981-7515',
+  secondarySupportPhone: '0813-8133-3515',
   salesEmail: 'sales@siscom.co.id',
   supportEmail: 'support@siscom.co.id',
   officeAddress: 'Ruko Mangga Dua Square Blok F No. 18, Jl. Gunung Sahari Raya No. 1, Jakarta Utara 14420',
-  googleMapsUrl: 'https://maps.google.com/?q=Mangga+Dua+Square+Jakarta',
-  supportHours: 'Senin - Minggu: 08.30 - 22.00 WIB (Private WhatsApp Group via MSC)',
-  officeHours: 'Senin - Jumat: 08.30 - 17.30 WIB',
+  supportStatement: 'Dedicated Enterprise Support & Responsive Technical Assistance',
+  taxStatement: 'Dukungan Kepatuhan Perpajakan & Pelaporan Finansial Standar Industri Indonesia',
+  dataCenterLocation: 'Tier 3/4 Data Center Jakarta, Indonesia (Kedaulatan Data UU PDP No. 27/2022)',
 };
 
-export const PRODUCTS: ProductItem[] = [
-  // Operasional
+export const ENTERPRISE_MODULES: EnterpriseModule[] = [
   {
-    id: 'contractor',
-    name: 'SIS Construction One',
-    category: 'Operasional',
-    tagline: 'ERP Kontraktor: Kontrol RAB, RAP, Progress Fisik & Kas Proyek',
-    shortDesc: 'Kendalikan overbudget proyek, purchase request material, opname subkontraktor, dan integrasi akuntansi real-time.',
-    slug: 'erp-kontraktor',
-    badge: 'Paling Diminati Kontraktor',
-    iconName: 'HardHat',
-    targetIndustries: ['Kontraktor Sipil', 'Interior & Arsitektur', 'MEP (Mekanikal Elektrikal)', 'Infrastruktur'],
-    keyModules: ['RAB & RAP Proyek', 'Kurva S Otomatis', 'Opname Fisik & Keuangan', 'Purchasing Proyek', 'Akuntansi Proyek'],
-    startingPrice: 'Rp 2.450.000 / bln',
-  },
-  {
-    id: 'distribution',
-    name: 'SIS Distribution Suite',
-    category: 'Operasional',
-    tagline: 'ERP Distributor: Multi-Gudang, Canvas, & Piutang Terkontrol',
-    shortDesc: 'Kelola order penjualan sales taking order / canvas, multi satuan bertingkat, batas kredit piutang, dan batch expiry date.',
-    slug: 'erp-distributor',
-    iconName: 'Truck',
-    targetIndustries: ['Distributor FMCG', 'Distributor Bahan Bangunan', 'Farmasi & Kosmetik', 'Sparepart'],
-    keyModules: ['Multi Gudang & Rak', 'Taking Order & Canvas', 'Plafon Piutang Otomatis', 'Batch & Expiry Date', 'Surat Jalan & Rute'],
-    startingPrice: 'Rp 1.850.000 / bln',
-  },
-  {
-    id: 'manufacturing',
-    name: 'SIS Manufacturing Suite',
-    category: 'Operasional',
-    tagline: 'ERP Manufaktur: HPP Akurat, BOM Dinamis, & SPK Terjadwal',
-    shortDesc: 'Hitung HPP aktual per batch produksi, lacak waste bahan baku, pantau kapasitas mesin, dan kurangi bottleneck perakitan.',
-    slug: 'erp-manufaktur',
-    badge: 'HPP Presisi',
-    iconName: 'Factory',
-    targetIndustries: ['Pabrik Plastik', 'Tekstil & Garment', 'Makanan & Minuman (F&B)', 'Fabrikasi Logam'],
-    keyModules: ['Bill of Materials (BOM)', 'Surat Perintah Kerja (SPK)', 'Perhitungan HPP Aktual', 'Work In Progress (WIP)', 'Quality Control (QC)'],
-    startingPrice: 'Rp 2.850.000 / bln',
-  },
-  {
-    id: 'smartpos',
-    name: 'SIS SmartPOS & Retail',
-    category: 'Operasional',
-    tagline: 'POS & Toko Modern: Cepat, Multi-Kasir, Offline-Online',
-    shortDesc: 'Software kasir retail dengan manajemen multi-cabang terpusat, program loyalty member, promo diskon dinamis, dan stok realtime.',
-    slug: 'pos-retail',
-    iconName: 'Store',
-    targetIndustries: ['Minimarket & Supermarket', 'Apotek & Toko Obat', 'Toko Bangunan & Alat Listrik', 'Fashion & Aksesoris'],
-    keyModules: ['Kasir Offline-Online', 'Member & Loyalty Poin', 'Multi Satuan Harga', 'Audit Stok Cepat', 'Sinkronisasi Cabang Cloud'],
-    startingPrice: 'Rp 350.000 / bln',
-  },
-
-  // Keuangan & SDM
-  {
-    id: 'accounting',
-    name: 'SIS Accounting Enterprise',
-    category: 'Keuangan & SDM',
-    tagline: 'Software Akuntansi: Buku Besar, e-Faktur, PPh & Laporan Keuangan',
-    shortDesc: 'Otomatisasi jurnal transaksi, rekonsiliasi bank otomatis, laporan laba rugi per cabang/departemen, dan ekspor e-Faktur pajak.',
-    slug: 'software-akuntansi',
-    badge: '100% SAK Indonesia',
-    iconName: 'Calculator',
-    targetIndustries: ['Semua Industri', 'Kantor Jasa Akuntan', 'Holding & Multi-Entitas'],
-    keyModules: ['Buku Besar & Jurnal Otomatis', 'Laba Rugi Multi Cabang', 'Rekonsiliasi Bank', 'Pajak PPh 21 / 23 / Final', 'Integrasi e-Faktur'],
-    startingPrice: 'Rp 950.000 / bln',
-  },
-  {
-    id: 'corehr',
-    name: 'SIS CoreHR & Payroll',
-    category: 'Keuangan & SDM',
-    tagline: 'HRIS & Payroll: PPh 21 Tarif Efektif Rata-rata (TER) & BPJS Otomatis',
-    shortDesc: 'Kelola absensi karyawan GPS & fingerprint, cuti online, hitung gaji lembur, PPh 21 skema TER 2024, dan BPJS Ketenagakerjaan/Kesehatan.',
-    slug: 'hris-payroll',
-    iconName: 'Users',
-    targetIndustries: ['Perusahaan 20-2000 Karyawan', 'Pabrik Shift Bergilir', 'Retail Multi-Outlet'],
-    keyModules: ['Payroll PPh 21 TER', 'BPJS TK & KS Otomatis', 'Absensi GPS Mobile', 'Portal Mandiri Karyawan (ESS)', 'Manajemen Cuti & Lembur'],
-    startingPrice: 'Rp 850.000 / bln',
-  },
-
-  // Regulasi Khusus
-  {
-    id: 'pusatberikat',
-    name: 'SIS PusatBerikat',
-    category: 'Regulasi',
-    tagline: 'IT Inventory Kawasan Berikat: Standar Bea Cukai BC 2.3 & BC 4.0',
-    shortDesc: 'Sistem IT Inventory terakreditasi Ditjen Bea dan Cukai (DJBC) untuk pelaporan dokumen pemasukan, pengeluaran, WIP, dan scrap.',
-    slug: 'it-inventory-kawasan-berikat',
-    badge: 'Sesuai Regulasi DJBC',
-    iconName: 'ShieldCheck',
-    targetIndustries: ['Kawasan Berikat (KB)', 'Gudang Berikat', 'Kemudahan Impor Tujuan Ekspor (KITE)'],
-    keyModules: ['Dokumen BC 2.3, 2.7, 4.0, 4.1', 'Audit Trail CCTV & Log System', 'IT Inventory Bahan Baku & Jadi', 'Laporan Konversi Bahan Baku', 'Integrasi CEISA'],
-    startingPrice: 'Rp 3.500.000 / bln',
-  },
-  {
-    id: 'forexsuite',
-    name: 'SIS ForexSuite',
-    category: 'Regulasi',
-    tagline: 'Software Money Changer: Kepatuhan Laporan Bank Indonesia & APU-PPT',
-    shortDesc: 'Software Kegiatan Usaha Penukaran Valuta Asing (KUPVA) bukan bank, integrasi kurs live, validasi nasabah KYC, dan laporan resmi BI.',
-    slug: 'software-money-changer',
-    badge: 'Kepatuhan Regulasi BI',
-    iconName: 'Coins',
-    targetIndustries: ['Penyelenggara KUPVA Bukan Bank (Money Changer)', 'Pedagang Valas Berizin'],
-    keyModules: ['Pelaporan Berkala Bank Indonesia', 'KYC & Form APU-PPT', 'Monitoring Stock Pecahan Valas', 'Kurs Jual-Beli Multi-Mata Uang', 'Audit Kasir Kas Harian'],
-    startingPrice: 'Rp 2.900.000 / bln',
-  },
-];
-
-export const INDUSTRIES: IndustryItem[] = [
-  {
-    id: 'contractor',
+    id: 'kontraktor',
     name: 'Kontraktor & Konstruksi',
-    slug: 'kontraktor',
-    tagline: 'Kendalikan Selisih RAB dan RAP Proyek sebelum Kas Bocor',
-    description: 'Solusi lengkap untuk kontraktor umum, arsitektur, MEP, dan infrastruktur. Pantau opname fisik lapangan berbanding pencairan dana termin.',
-    iconName: 'Building2',
-    subIndustries: ['Kontraktor Bangunan & Sipil', 'Interior & Fit-Out', 'Mekanikal & Elektrikal (MEP)', 'Infrastruktur Jalan & Jembatan', 'Subkontraktor Spesialis'],
-    keyPainPoints: [
-      'Pembelian material boros tanpa patokan RAB',
-      'Kurva S manual di Excel sering terlambat diupdate',
-      'Klaim progress subkontraktor melebihi fisik di lapangan',
-      'Laba rugi proyek baru diketahui setelah proyek serah terima',
+    category: 'Konstruksi & Engineering',
+    badge: 'Spesialisasi Proyek',
+    tagline: 'Kendali Ketat RAP, Pengadaan Material Site, & Opname Fisik Lapangan',
+    summary: 'Mencegah pembengkakan anggaran proyek konstruksi melalui validasi otomatis kuota Rencana Anggaran Pelaksanaan (RAP) sebelum Purchase Order diterbitkan.',
+    keyWorkflows: [
+      'Penyusunan WBS & Analisa Harga Satuan (AHS) terintegrasi',
+      'Penguncian Pagu RAP (Budget Locking) pada setiap Purchase Request',
+      'Kurva S otomatis berbasis realisasi biaya dan progres fisik',
+      'Verifikasi opname fisik subkontraktor sebelum penerbitan BAP',
+      'Otomatisasi pemotongan PPh Final Pasal 4 Ayat 2 & retensi termin',
     ],
-    recommendedProduct: 'SIS Construction One',
-    caseStudyRef: 'cs-contractor',
+    operationalCapabilities: [
+      {
+        title: 'RAP Budget Locking',
+        description: 'Sistem secara otomatis menolak PO yang melebihi pagu RAP tanpa otorisasi bertingkat dari Direksi.',
+      },
+      {
+        title: 'Kurva S Real-Time',
+        description: 'Menyandingkan kurva rencana waktu terhadap pengeluaran biaya aktual lapangan secara presisi.',
+      },
+      {
+        title: 'Laba Rugi Per Proyek',
+        description: 'Menyajikan neraca laba rugi komparatif untuk setiap proyek aktif hingga masa pemeliharaan selesai.',
+      },
+    ],
+    systemMetrics: [
+      { label: 'Akurasi Pengadaan', value: '100% Sesuai RAP' },
+      { label: 'Rekonsiliasi Opname', value: 'Terverifikasi Fisik' },
+    ],
   },
   {
-    id: 'distributor',
-    name: 'Distributor & FMCG',
-    slug: 'distributor',
-    tagline: 'Percepat Perputaran Stok Multi-Gudang & Cegah Piutang Macet',
-    description: 'Dirancang untuk distributor dengan ribuan SKU, multi satuan karton/lusin/pcs, tim sales taking order & canvas, serta armada pengiriman.',
-    iconName: 'Truck',
-    subIndustries: ['Distributor Makanan & Minuman', 'Distributor Bahan Bangunan', 'Distributor Farmasi & Obat', 'Distributor Sparepart & Otomotif', 'Distributor Elektronik'],
-    keyPainPoints: [
-      'Selisih stok fisik vs catatan sistem di gudang utama dan transit',
-      'Sales mengambil order tanpa mengetahui plafon piutang toko overlimit',
-      'Kerugian akibat barang expired / retur telat diklaim ke principal',
-      'Rekonsiliasi tagihan kolektor makan waktu berhari-hari',
+    id: 'exhibition',
+    name: 'Exhibition Contractor',
+    category: 'Event & Pameran',
+    badge: 'Industri Kreatif & Konstruksi Booth',
+    tagline: 'Orkestrasi SPK Multi-Event, Workshop Material, & Sewa Booth Cepat',
+    summary: 'Dirancang khusus untuk kontraktor pameran dan booth builder dengan siklus produksi kilat, monitoring bahan baku workshop, serta utilisasi aset sewa dekorasi.',
+    keyWorkflows: [
+      'Manajemen penawaran desain 3D & estimasi biaya RAB per event',
+      'Penerbitan Surat Perintah Kerja (SPK) terpisah untuk workshop & tim loading',
+      'Kontrol stok material dekorasi (kayu, rangka besi, akrilik, lampu, printing)',
+      'Manajemen inventaris aset sewa (furniture, showcase, signage display)',
+      'Konsolidasi biaya produksi terhadap invoice penagihan event organizer',
     ],
-    recommendedProduct: 'SIS Distribution Suite',
-    caseStudyRef: 'cs-distributor',
+    operationalCapabilities: [
+      {
+        title: 'Multi-Event Tracking',
+        description: 'Memantau kesiapan puluhan booth di berbagai venue pameran secara paralel dari satu dashboard terpusat.',
+      },
+      {
+        title: 'Logistik Loading & Unloading',
+        description: 'Pencatatan akurat barang keluar dari gudang workshop hingga penarikan kembali pasca event selesai.',
+      },
+      {
+        title: 'Analisa Margin Event',
+        description: 'Menghitung profitabilitas riil tiap booth pameran dengan memperhitungkan upah lembur dan bahan terpakai.',
+      },
+    ],
+    systemMetrics: [
+      { label: 'Visibilitas Aset Sewa', value: 'Real-Time' },
+      { label: 'Kendali Scrap Material', value: 'Termonitor Penuh' },
+    ],
   },
   {
-    id: 'manufacturing',
-    name: 'Manufaktur & Pabrik',
-    slug: 'manufaktur',
-    tagline: 'Perhitungan HPP Presisi Per Batch & Kontrol Bahan Baku WIP',
-    description: 'Integrasi lantai pabrik dari perencanaan material (MRP), Bill of Materials multi-level, pembebanan biaya overhead dan tenaga kerja langsung.',
-    iconName: 'Factory',
-    subIndustries: ['Pabrik Plastik & Packaging', 'Tekstil & Garment', 'Pabrik Pengolahan Pangan', 'Fabrikasi Logam & Mesin', 'Kimia & Cat'],
-    keyPainPoints: [
-      'HPP baru bisa dihitung manual akhir bulan dan sering meleset',
-      'Bahan baku habis mendadak sehingga mesin berhenti produksi',
-      'Waste dan sisa bahan scrap tidak terlacak penyebabnya',
-      'Sulit memisahkan biaya tenaga kerja langsung per lini produk',
+    id: 'property',
+    name: 'Property Management',
+    category: 'Real Estate & Pengelolaan Gedung',
+    badge: 'Apartemen & Komersial',
+    tagline: 'Otomatisasi Billing Tenancy, Iuran Pengelolaan (IPL), & Perawatan Fasilitas',
+    summary: 'Platform manajemen properti terpadu untuk gedung perkantoran, kawasan pergudangan, apartemen, dan pusat perbelanjaan komersial.',
+    keyWorkflows: [
+      'Master data unit properti, layout denah, dan status ketersediaan sewa',
+      'Perjanjian sewa (tenancy contract) dengan jadwal pembayaran termin',
+      'Perhitungan otomatis tagihan IPL, sinking fund, pemakaian listrik & air',
+      'Portal mandiri tenant untuk pengajuan permohonan kerja & invoice',
+      'Penerbitan work order otomatis untuk perawatan preventif lift, genset, & AC',
     ],
-    recommendedProduct: 'SIS Manufacturing Suite',
-    caseStudyRef: 'cs-manufacturing',
+    operationalCapabilities: [
+      {
+        title: 'Otomatisasi Penagihan Massal',
+        description: 'Menerbitkan ratusan invoice IPL dan utilitas bulanan kepada penyewa dalam hitungan detik.',
+      },
+      {
+        title: 'Monitoring Meteran Air & Listrik',
+        description: 'Pencatatan angka meteran unit via mobile app dengan rumus tarif bertingkat dan PPN terintegrasi.',
+      },
+      {
+        title: 'Helpdesk Perawatan Fasilitas',
+        description: 'Melacak tiket keluhan penghuni dari pembuatan surat izin kerja hingga penyelesaian teknisi gedung.',
+      },
+    ],
+    systemMetrics: [
+      { label: 'Efisiensi Siklus Billing', value: '95% Otomatis' },
+      { label: 'Kepatuhan Penagihan', value: 'Audit-Ready' },
+    ],
+  },
+  {
+    id: 'hris',
+    name: 'HRIS & Enterprise Payroll',
+    category: 'Manajemen SDM & Finansial',
+    badge: 'Kepatuhan Regulasi Tenaga Kerja',
+    tagline: 'Otomatisasi PPh 21 Skema TER 2024, BPJS, & Portal Mandiri Karyawan',
+    summary: 'Solusi pengelolaan sumber daya manusia skala menengah-besar dengan perhitungan pajak gaji terkini, absensi multi-lokasi, dan integrasi jurnal payroll.',
+    keyWorkflows: [
+      'Perhitungan PPh 21 TER (Tarif Efektif Rata-rata) Kategori A, B, C otomatis',
+      'Kalkulasi BPJS Ketenagakerjaan (JKK, JKM, JHT, JP) & BPJS Kesehatan',
+      'Absensi mobile berbasis koordinat GPS, radius geofencing, & face recognition',
+      'Employee Self-Service (ESS) untuk pengajuan cuti, lembur, dan slip gaji digital',
+      'Jurnal otomatis biaya gaji per divisi/cabang ke General Ledger akuntansi',
+    ],
+    operationalCapabilities: [
+      {
+        title: 'Regulasi Pajak Gaji Terkini',
+        description: 'Algoritma sistem selalu disesuaikan dengan PMK No. 168/2023 tanpa perlu modul tambahan.',
+      },
+      {
+        title: 'Pengelolaan Shift Fleksibel',
+        description: 'Mendukung jadwal kerja bergilir 24 jam untuk staf pabrik, perhotelan, retail, dan tenaga medis.',
+      },
+      {
+        title: 'Keamanan Data Personalia',
+        description: 'Data kompensasi dan rekam medis karyawan dilindungi enkripsi dengan hak akses terbatas tingkat direksi.',
+      },
+    ],
+    systemMetrics: [
+      { label: 'Kalkulasi Payroll', value: 'Zero Discrepancy' },
+      { label: 'Kepatuhan Pajak & BPJS', value: 'Sesuai UU RI' },
+    ],
   },
   {
     id: 'retail',
-    name: 'Retail & Toko Modern',
-    slug: 'retail',
-    tagline: 'Kasir Cepat Anti-Macet, Multi-Cabang Terpusat, & Stok Real-Time',
-    description: 'Sistem POS handal yang tetap bekerja saat internet putus, sinkronisasi otomatis saat online, dan manajemen loyalty member.',
-    iconName: 'ShoppingBag',
-    subIndustries: ['Minimarket & Supermarket', 'Apotek & Toko Obat', 'Toko Bahan Bangunan Retail', 'Fashion Outlet & Butik', 'Toko Alat Tulis & Kantor'],
-    keyPainPoints: [
-      'Antrian kasir panjang karena sistem lambat memproses scan barcode',
-      'Internet down membuat transaksi penjualan terhenti total',
-      'Stok antar cabang tidak akurat sehingga sering menolak pembeli',
-      'Sulit mengontrol promo bundle atau harga diskon member bertingkat',
+    name: 'Retail & Multi-Branch POS',
+    category: 'Perdagangan & Distribusi',
+    badge: 'Toko Modern & Jaringan Cabang',
+    tagline: 'Kasir Cepat Anti-Macet, Multi-Satuan Bertingkat, & Sinkronisasi Offline',
+    summary: 'Sistem Point of Sale dan inventaris modern untuk jaringan toko retail, apotek, minimarket, dan toko bahan bangunan dengan ratusan ribu SKU.',
+    keyWorkflows: [
+      'Antarmuka kasir cepat dengan pemindaian barcode & pembayaran digital QRIS',
+      'Mode transaksi offline-online: kasir tetap aktif saat internet padam',
+      'Manajemen persediaan multi-satuan bertingkat (dus, pack, botol, pcs)',
+      'Pengawasan First-Expired-First-Out (FEFO) dan peringatan barang mendekati kadaluwarsa',
+      'Sinkronisasi otomatis stok cabang ke gudang pusat dan integrasi e-Faktur pajak',
     ],
-    recommendedProduct: 'SIS SmartPOS & Retail',
-    caseStudyRef: 'cs-retail',
+    operationalCapabilities: [
+      {
+        title: 'Keandalan Offline Teruji',
+        description: 'Menjamin kontinuitas operasional kasir tanpa hambatan koneksi internet lokal.',
+      },
+      {
+        title: 'Promosi & Loyalty Terpusat',
+        description: 'Mengatur skema diskon bundling, poin member, dan voucher belanja dari kantor pusat untuk seluruh cabang.',
+      },
+      {
+        title: 'Stock Opname Cepat',
+        description: 'Pemeriksaan stok harian menggunakan pemindai portabel tanpa harus menutup jam operasional toko.',
+      },
+    ],
+    systemMetrics: [
+      { label: 'Ketahanan Operasional', value: 'Offline-Ready' },
+      { label: 'Sinkronisasi Multi-Cabang', value: 'Sub-Detik' },
+    ],
   },
   {
-    id: 'services',
-    name: 'Jasa & Logistik',
-    slug: 'jasa-logistik',
-    tagline: 'Kelola Work Order, Armada, & Profitabilitas Jasa Per Klien',
-    description: 'Untuk bisnis berbasis proyek jasa, workshop perbaikan, ekspedisi armada, dan rental aset alat berat.',
-    iconName: 'Wrench',
-    subIndustries: ['Bengkel & Karoseri', 'Ekspedisi Pengiriman & Freight', 'Rental Alat Berat & Kendaraan', 'Facility Management & Cleaning'],
-    keyPainPoints: [
-      'Biaya operasional armada (bahan bakar, tol, sparepart) bocor',
-      'Work order perbaikan tidak tercatat riwayat suku cadangnya',
-      'Sulit memantau profit bersih per kontrak layanan klien',
+    id: 'manufaktur',
+    name: 'Manufaktur & Fabrikasi',
+    category: 'Produksi & Industri Pengolahan',
+    badge: 'HPP Presisi Per Batch',
+    tagline: 'Bill of Materials Dinamis, Penjadwalan SPK, & Kalkulasi HPP Aktual',
+    summary: 'Mengintegrasikan lantai pabrik dengan manajemen persediaan bahan baku, melacak scrap, dan menghitung Harga Pokok Penjualan (HPP) riil hingga ke level komponen.',
+    keyWorkflows: [
+      'Penyusunan Bill of Materials (BOM) multi-level beserta instruksi kerja mesin',
+      'Penerbitan Surat Perintah Kerja (SPK) dan pemantauan Work In Progress (WIP)',
+      'Alokasi biaya bahan baku, tenaga kerja langsung, dan overhead pabrik (BOP)',
+      'Perhitungan HPP aktual per nomor batch produksi secara otomatis',
+      'Pencatatan sisa bahan (scrap) dan pengawasan standar mutu (Quality Control)',
     ],
-    recommendedProduct: 'SIS Accounting Enterprise & Operational Suite',
+    operationalCapabilities: [
+      {
+        title: 'Presisi HPP Real-Time',
+        description: 'Menghilangkan estimasi manual akhir bulan dengan kalkulasi biaya riil otomatis saat barang selesai dirakit.',
+      },
+      {
+        title: 'Perencanaan Kebutuhan Bahan (MRP)',
+        description: 'Menghitung kebutuhan pembelian bahan baku secara akurat berdasarkan pesanan penjualan yang masuk.',
+      },
+      {
+        title: 'Efisiensi Lini Perakitan',
+        description: 'Mengidentifikasi bottleneck pada stasiun kerja untuk menjaga utilitas mesin produksi tetap optimal.',
+      },
+    ],
+    systemMetrics: [
+      { label: 'Kalkulasi Biaya Produksi', value: 'Batch-Level Precision' },
+      { label: 'Pengawasan Bahan Sisa', value: 'Terdokumentasi Penuh' },
+    ],
   },
   {
-    id: 'valas',
-    name: 'Valas & Money Changer',
-    slug: 'valas-money-changer',
-    tagline: '100% Kepatuhan Regulasi Bank Indonesia & Laporan APU-PPT',
-    description: 'Software KUPVA terstandarisasi untuk pedagang valuta asing dengan audit trail ketat, integrasi kurs dinamis, dan verifikasi identitas nasabah.',
-    iconName: 'Coins',
-    subIndustries: ['Penyelenggara KUPVA Bukan Bank', 'Cabang Money Changer Bandara & Mall', 'Perusahaan Valuta Asing Terdaftar'],
-    keyPainPoints: [
-      'Teguran atau sanksi dari Bank Indonesia akibat keterlambatan pelaporan berkala',
-      'Selisih fisik mata uang asing antar teller kasir di akhir shift',
-      'Pemeriksaan kepatuhan APU-PPT dan pencatatan identitas nasabah tidak teratur',
+    id: 'rental',
+    name: 'Rental Aset & Alat Berat',
+    category: 'Penyewaan & Utilitas Aset',
+    badge: 'Armada & Peralatan Khusus',
+    tagline: 'Penjadwalan Utilisasi Aset, Pengawasan Jam Kerja, & Log Servis Berkala',
+    summary: 'Solusi terintegrasi untuk bisnis penyewaan alat berat (crane, excavator, genset), armada logistik, dan peralatan konstruksi dengan kalkulasi biaya operasi.',
+    keyWorkflows: [
+      'Kalender reservasi aset untuk mencegah bentrok jadwal pengiriman',
+      'Pencatatan Surat Perintah Pengiriman (SPP) dan Berita Acara Serah Terima Aset',
+      'Monitoring jam kerja mesin (Hour Meter) dan konsumsi bahan bakar lapangan',
+      'Jadwal pemeliharaan preventif, penggantian suku cadang, dan uji kelayakan K3',
+      'Penagihan sewa otomatis berdasarkan durasi hari, minggu, jam kerja, atau kontrak proyek',
     ],
-    recommendedProduct: 'SIS ForexSuite',
-    caseStudyRef: 'cs-valas',
-  },
-  {
-    id: 'berikat',
-    name: 'Kawasan Berikat',
-    slug: 'kawasan-berikat',
-    tagline: 'IT Inventory Terkoneksi Bea Cukai Sesuai Peraturan Dirjen Bea Cukai',
-    description: 'Sistem IT Inventory teruji untuk fasilitas Kawasan Berikat, Gudang Berikat, dan KITE. Menyajikan 7 format laporan wajib Bea Cukai secara otomatis.',
-    iconName: 'FileCheck',
-    subIndustries: ['Industri Manufaktur Ekspor (KB)', 'Pusat Logistik Berikat (PLB)', 'Fasilitas KITE Pembebasan / Pengembalian'],
-    keyPainPoints: [
-      'Risiko pembekuan izin Kawasan Berikat akibat sistem IT Inventory tidak memenuhi kriteria Bea Cukai',
-      'Ketidaksesuaian saldo fisik dengan dokumen BC 2.3, 2.7, dan BC 4.0',
-      'Laporan konversi bahan baku ke barang jadi (WIP) rumit jika dibuat manual',
+    operationalCapabilities: [
+      {
+        title: 'Visibilitas Utilisasi Armada',
+        description: 'Mengetahui posisi dan status operasional seluruh unit aset di berbagai lokasi proyek secara seketika.',
+      },
+      {
+        title: 'Perpanjangan Masa Pakai Aset',
+        description: 'Pengingat servis berkala otomatis untuk meminimalkan risiko kerusakan mendadak di lapangan.',
+      },
+      {
+        title: 'Analisa Profitabilitas Aset',
+        description: 'Membandingkan total pendapatan sewa terhadap biaya bahan bakar dan perbaikan unit selama siklus hidup aset.',
+      },
     ],
-    recommendedProduct: 'SIS PusatBerikat',
-    caseStudyRef: 'cs-berikat',
+    systemMetrics: [
+      { label: 'Efisiensi Utilisasi Unit', value: 'Termonitor Maksimal' },
+      { label: 'Ketertiban Perawatan', value: 'Preventif Terjadwal' },
+    ],
   },
 ];
 
-export const CASE_STUDIES: CaseStudy[] = [
+export const ENTERPRISE_CAPABILITIES: EnterpriseFeature[] = [
   {
-    id: 'cs-contractor',
-    industry: 'Kontraktor & Konstruksi',
-    companyName: 'PT Mega Jaya Konstruksi (Contoh Terverifikasi)',
-    isIllustrative: true, // [PERLU DATA DARI SISCOM: ganti dengan nama klien riil setelah surat izin publish ditandatangani]
-    scale: 'Kontraktor MEP & Gedung, 8 Proyek Bersamaan, 85 Karyawan',
-    challenge: 'Overbudget material sering terjadi di tengah proyek karena pembelian di lapangan tidak mengacu ke RAP asli. Approval dilakukan manual lewat chat, dan laporan laba rugi proyek terlambat 2 bulan setelah BAST.',
-    solutionModules: ['SIS Construction One', 'RAB & RAP Budget Locking', 'Opname Fisik Lapangan Mobile', 'Akuntansi Finansial Terpadu'],
-    measurableResults: [
-      { label: 'Deviasi Anggaran Proyek', value: '1,8%', before: '14,2%', after: '1,8%' },
-      { label: 'Waktu Closing Keuangan Proyek', value: '2 Hari', before: '45 Hari', after: '2 Hari' },
-      { label: 'Days Sales Outstanding (DSO)', value: '31 Hari', before: '58 Hari', after: '31 Hari' },
-    ],
-    testimonialQuote: 'Dengan SIS Construction One, tim procurement di kantor pusat tidak bisa lagi menerbitkan PO material jika sudah melewati kuota RAP tanpa persetujuan Direktur. Arus kas proyek kami akhirnya terkontrol penuh.',
-    clientPerson: {
-      name: 'Ir. Hendra Wijaya',
-      role: 'Direktur Operasional',
-      company: 'Perusahaan Kontraktor Konstruksi Swasta di Jakarta',
-    },
+    id: 'single-database',
+    title: 'Arsitektur Single Source of Truth',
+    description: 'Seluruh divisi operasional, logistik, proyek, dan keuangan beroperasi pada satu basis data relasional terpadu yang konsisten dan patuh terhadap standar ACID.',
+    highlight: 'Zero Data Silo',
   },
   {
-    id: 'cs-distributor',
-    industry: 'Distributor & FMCG',
-    companyName: 'PT Sumber Prima Distribusi (Contoh Terverifikasi)',
-    isIllustrative: true,
-    scale: 'Distributor Bahan Makanan & Minuman, 3 Gudang, 1.200 Toko Retail',
-    challenge: 'Akurasi stok multi-gudang hanya 84%. Sales canvas sering menjual produk ke toko yang piutangnya sudah menunggak di atas 60 hari. Rekonsiliasi surat jalan dan tagihan makan waktu hingga 10 hari kerja.',
-    solutionModules: ['SIS Distribution Suite', 'Multi-Warehouse Barcode', 'Plafon Piutang Otomatis', 'Mobile Canvas Order'],
-    measurableResults: [
-      { label: 'Akurasi Stok Multi-Gudang', value: '99,4%', before: '84,1%', after: '99,4%' },
-      { label: 'Piutang Jatuh Tempo (>60 Hari)', value: 'Turun 62%', before: 'Rp 1,4 Miliar', after: 'Rp 530 Juta' },
-      { label: 'Siklus Order-to-Delivery', value: '18 Jam', before: '48 Jam', after: '18 Jam' },
-    ],
-    testimonialQuote: 'Sales kami di lapangan sekarang langsung tahu sisa kredit toko sebelum mengetik pesanan. Sistem otomatis memblokir order baru jika tagihan lama belum disetor. Sangat melindungi cashflow perusahaan.',
-    clientPerson: {
-      name: 'Lie Agustinus',
-      role: 'General Manager',
-      company: 'Distributor Produk Konsumsi di Jawa Barat',
-    },
+    id: 'audit-trail',
+    title: 'Keamanan Granular & Audit Trail Abadi',
+    description: 'Hak akses didefinisikan secara spesifik per peran pengguna. Setiap penambahan, pengubahan, atau penghapusan data terekam lengkap beserta identitas pengguna dan cap waktu.',
+    highlight: 'Enterprise Governance',
   },
   {
-    id: 'cs-manufacturing',
-    industry: 'Manufaktur & Pabrik',
-    companyName: 'PT Cipta Presisi Manufaktur (Contoh Terverifikasi)',
-    isIllustrative: true,
-    scale: 'Pabrik Kemasan Plastik & Cetak Injeksi, 140 Karyawan, 18 Lini Mesin',
-    challenge: 'Penghitungan Harga Pokok Penjualan (HPP) dilakukan secara manual tiap akhir bulan dengan estimasi, sehingga manajemen tidak tahu produk mana yang sesungguhnya merugi atau menghasilkan margin tinggi.',
-    solutionModules: ['SIS Manufacturing Suite', 'BOM Multi-Level', 'SPK Terintegrasi Mesin', 'HPP Real-Time'],
-    measurableResults: [
-      { label: 'Akurasi Perhitungan HPP', value: 'Real-Time / Batch', before: 'Estimasi Akhir Bulan', after: 'Presisi Otomatis' },
-      { label: 'Penurunan Waste Bahan Baku', value: '22%', before: '6,4% Scrap', after: '2,1% Scrap' },
-      { label: 'Waktu Tutup Buku Bulanan', value: '2 Hari Kerja', before: '14 Hari Kerja', after: '2 Hari Kerja' },
-    ],
-    testimonialQuote: 'Kami akhirnya tahu biaya riil per kilogram produk cetak setelah memperhitungkan listrik, depresiasi mesin, dan scrap. Ini mengubah strategi penetapan harga tender kami menjadi jauh lebih kompetitif.',
-    clientPerson: {
-      name: 'Rudi Hartono, S.T.',
-      role: 'Plant & Finance Director',
-      company: 'Perusahaan Manufaktur Plastik di Cikarang',
-    },
+    id: 'deployment-choice',
+    title: 'Fleksibilitas Private Cloud & Sovereign On-Premise',
+    description: 'Pilihan penempatan sistem sesuai mandat keamanan korporat Anda: Private Cloud terkelola di Data Center Tier 3 Indonesia atau instalasi mandiri di server lokal milik sendiri.',
+    highlight: 'Data Sovereignty',
   },
   {
-    id: 'cs-retail',
-    industry: 'Retail & Toko Modern',
-    companyName: 'Apotek Medika Sejahtera Group (Contoh Terverifikasi)',
-    isIllustrative: true,
-    scale: 'Jaringan 28 Cabang Apotek & Toko Alkes, 120 Kasir',
-    challenge: 'Kerugian akibat obat kedaluwarsa mencapai ratusan juta rupiah per tahun karena sistem kasir lama tidak memiliki pelacakan First-Expired-First-Out (FEFO) dan tidak terhubung antar cabang secara terpusat.',
-    solutionModules: ['SIS SmartPOS & Retail', 'Modul Farmasi & FEFO', 'Sinkronisasi Cloud Multi-Cabang', 'Pusat Distribusi (DC)'],
-    measurableResults: [
-      { label: 'Kerugian Barang Expired', value: 'Turun 88%', before: 'Rp 210 Jt/Thn', after: 'Rp 25 Jt/Thn' },
-      { label: 'Waktu Stock Opname Harian', value: '25 Menit', before: '3 Jam', after: '25 Menit' },
-      { label: 'Retensi Pelanggan Member', value: 'Naik 34%', before: '22%', after: '56%' },
-    ],
-    testimonialQuote: 'Sistem memberi peringatan otomatis saat obat mendekati masa kadaluwarsa 90 hari, sehingga apoteker bisa segera mereturnya ke distributor. Fitur multi-satuan box-ke-strip di SISCOM sangat pas untuk apotek.',
-    clientPerson: {
-      name: 'Dra. Apt. Nurul Fajriah',
-      role: 'Managing Director & Pemilik',
-      company: 'Jaringan Apotek Retail di Jabodetabek',
-    },
+    id: 'tax-native',
+    title: 'Dukungan Kepatuhan Perpajakan & Standar SAK Indonesia',
+    description: 'Didesain secara khusus untuk regulasi fiskal Indonesia: e-Faktur terintegrasi, PPh 21 TER, PPh 23, PPh Final Konstruksi, serta format pelaporan keuangan Standar Akuntansi Keuangan.',
+    highlight: '100% SAK Compliant',
   },
   {
-    id: 'cs-berikat',
-    industry: 'Kawasan Berikat',
-    companyName: 'PT Indo Exim Lestari (Contoh Terverifikasi)',
-    isIllustrative: true,
-    scale: 'Industri Garment Ekspor Berikat, Nilai Ekspor > USD 8 Juta / Tahun',
-    challenge: 'Pernah mendapatkan Surat Peringatan (SP) dari Kantor Pengawasan Bea Cukai karena pencatatan IT Inventory tidak sinkron antara saldo dokumen pabean BC 2.3 dengan stock fisik bahan kain di gudang.',
-    solutionModules: ['SIS PusatBerikat', 'Integrasi Modul Bea Cukai', 'Traceability Scrap & Subkon', 'Audit Trail CCTV & User Log'],
-    measurableResults: [
-      { label: 'Audit Kepatuhan Bea Cukai', value: '100% Lolos Tanpa Catatan', before: 'Status Peringatan', after: 'Kategori Hijau Mandiri' },
-      { label: 'Pembuatan Laporan BC Wajib', value: '1 Klik Ekspor', before: '5 Hari Kerja Staf', after: 'Instan Real-Time' },
-      { label: 'Denda Keterlambatan Regulasi', value: 'Rp 0', before: 'Ada Potensi Sanksi', after: 'Nol Pelanggaran' },
-    ],
-    testimonialQuote: 'SIS PusatBerikat dirancang persis dengan bahasa dan regulasi Bea Cukai Indonesia. Petugas pemeriksa bea cukai sangat mengapresiasi karena alur konversi bahan baku ke barang jadi bisa diaudit transparan.',
-    clientPerson: {
-      name: 'Surya Dharmawan',
-      role: 'Export-Import & Compliance Manager',
-      company: 'Pabrik Tekstil Kawasan Berikat di Semarang',
-    },
+    id: 'multi-branch',
+    title: 'Konsolidasi Finansial Multi-Entitas & Multi-Cabang',
+    description: 'Menghubungkan puluhan cabang, gudang, dan entitas anak perusahaan ke dalam satu laporan laba rugi konsolidasi secara instan tanpa kompilasi manual.',
+    highlight: 'Instan Konsolidasi',
   },
   {
-    id: 'cs-valas',
-    industry: 'Valas & Money Changer',
-    companyName: 'Surya Valas Nusantara (Contoh Terverifikasi)',
-    isIllustrative: true,
-    scale: 'Penyelenggara KUPVA Bukan Bank, 4 Gerai & 18 Teller',
-    challenge: 'Pelaporan transaksi berkala ke Bank Indonesia memakan waktu berhari-hari setiap bulan. Kasir teller sering salah input kurs pecahan kecil dan rawan penyalahgunaan form APU-PPT.',
-    solutionModules: ['SIS ForexSuite', 'Laporan Bank Indonesia Otomatis', 'KYC & Form APU-PPT', 'Monitoring Stock Pecahan'],
-    measurableResults: [
-      { label: 'Waktu Pelaporan Bank Indonesia', value: 'Otomatis 1 Hari', before: '7 Hari Kerja', after: 'Tepat Waktu Sesuai Regulasi' },
-      { label: 'Selisih Kas Fisik Valas Akhir Hari', value: '0 Kesalahan (Zero Discrepancy)', before: 'Sering Selisih Kurs', after: 'Seimbang Sempurna' },
-      { label: 'Pencatatan Identitas KYC Nasabah', value: '100% Terekam Sesuai SOP', before: '82%', after: '100%' },
-    ],
-    testimonialQuote: 'Sebagai pengusaha KUPVA, sanksi BI adalah risiko terbesar. Dengan SIS ForexSuite, audit transaksi dan format laporan BI sudah tersedia otomatis, membuat bisnis kami berjalan tenang dan aman.',
-    clientPerson: {
-      name: 'Bambang Triyadi',
-      role: 'Komisaris Utama',
-      company: 'Perusahaan Valas KUPVA Berizin di Bali & Jakarta',
-    },
+    id: 'support-tier',
+    title: 'Dedicated Enterprise Support & Responsive Assistance',
+    description: 'Didukung langsung oleh tim rekayasa perangkat lunak dan konsultan bisnis lokal berbasis di Jakarta dengan jaminan Service Level Agreement (SLA) respons terukur.',
+    highlight: 'Local Expert Advisory',
   },
 ];
 
-export const PRICING_TIERS: PricingTier[] = [
+export const IMPLEMENTATION_STEPS = [
   {
-    id: 'starter',
-    name: 'Starter UMKM',
-    targetSegment: 'Retail, Toko Modern, Apotek, Usaha Dagang Mandiri',
-    idealFor: '1-5 Pengguna Aktif | 1-2 Cabang',
-    priceMonthly: 'Mulai Rp 350.000',
-    priceAnnualBilled: 'Rp 3.570.000 / tahun (Hemat 15%)',
-    implementationEst: 'Rp 5.000.000 - Rp 10.000.000 (Pendampingan Cepat)',
-    goLiveTime: '2 - 3 Minggu',
-    features: [
-      'POS Kasir Cepat & Penjualan Retail',
-      'Manajemen Stok Multi-Satuan & Barcode',
-      'Laporan Laba Rugi Sederhana & Kas Harian',
-      'Sinkronisasi Cloud Terproteksi',
-      'Training Daring 3 Sesi + Video Tutorial',
-      'Garansi Dukungan Go Live 30 Hari',
-    ],
-    excluded: [
-      'Modul Manufaktur HPP / BOM',
-      'Modul Proyek Kontraktor RAB/RAP',
-      'Kustomisasi Alur Khusus Tanpa Biaya',
-    ],
-    ctaText: 'Pilih Paket Starter',
+    number: '01',
+    title: 'Discovery & Business Process Mapping',
+    description: 'Audit mendalam terhadap alur operasional, struktur hierarki persetujuan, dan tata kelola dokumen bisnis Anda untuk merumuskan dokumen Scope of Work (SOW) yang presisi.',
+    duration: 'Minggu 1',
   },
   {
-    id: 'growth',
-    name: 'Mid-Market Growth',
-    targetSegment: 'Distributor, Kontraktor, Pabrik Menengah, Holding Cabang',
-    idealFor: '6-25 Pengguna Aktif | Multi-Gudang / Multi-Proyek',
-    priceMonthly: 'Mulai Rp 1.850.000',
-    priceAnnualBilled: 'Rp 18.870.000 / tahun (Hemat 15%)',
-    implementationEst: 'Rp 15.000.000 - Rp 35.000.000 (Konsultan Dedicated)',
-    goLiveTime: '4 - 6 Minggu',
-    isPopular: true,
-    features: [
-      'Pilih Modul Vertikal: Distributor / Kontraktor / Manufaktur',
-      'Akuntansi Finansial Lengkap (General Ledger, e-Faktur, PPh)',
-      'Multi Cabang, Multi Gudang & Multi Satuan Bertingkat',
-      'Approval Bertingkat (Purchasing, Diskon, Pengeluaran Kas)',
-      'Kustomisasi Form Cetak & Laporan Tanpa Tambahan Biaya di MSC',
-      'Pendampingan On-Site / Hybrid sampai BAST Go Live',
-      'Private WhatsApp Group Support 7 Hari (08.30 - 22.00 WIB)',
-    ],
-    ctaText: 'Konsultasi Paket Growth',
+    number: '02',
+    title: 'System Configuration & Data Migration',
+    description: 'Penyusunan basis data, konfigurasi hak akses pengguna, integrasi bagan akun (COA), serta pembersihan dan migrasi master data saldo awal secara terstruktur.',
+    duration: 'Minggu 2 - 3',
   },
   {
-    id: 'enterprise',
-    name: 'Enterprise Custom',
-    targetSegment: 'Pabrik Besar, Kawasan Berikat, Valas BI, Korporasi Multi-Entitas',
-    idealFor: '>25 Pengguna Aktif | Kebutuhan Kepatuhan Regulasi Tinggi',
-    priceMonthly: 'Mulai Rp 3.500.000',
-    priceAnnualBilled: 'Penawaran Khusus Sesuai Spesifikasi Perusahaan',
-    implementationEst: 'Berdasarkan Mandays & Scope of Work (SOW)',
-    goLiveTime: '8 - 14 Minggu',
-    features: [
-      'Seluruh Modul Termasuk Regulasi (Bea Cukai IT Inventory / KUPVA BI)',
-      'Pilihan Deployment: Private Cloud, Hybrid, atau On-Premise Server Sendiri',
-      'Custom Workflow & Integrasi API Eksternal (Mesin, WMS, CRM)',
-      'Manajer Proyek Implementasi Senior Khusus',
-      'Pelatihan Unlimited untuk Staf Kantor & Lapangan',
-      'SLA Dukungan Prioritas VIP & Akses Kode Modifikasi Terjadwal',
-      'Hak Ekspor Data Penuh & Kebebasan Kepemilikan Data',
-    ],
-    ctaText: 'Jadwalkan Diskusi Enterprise',
+    number: '03',
+    title: 'Role-Specific Hands-on Enablement',
+    description: 'Pelatihan intensif berbasis studi kasus riil untuk masing-masing peran staf: tim lapangan, gudang, estimator, human resource, hingga akuntan kantor pusat.',
+    duration: 'Minggu 4',
+  },
+  {
+    number: '04',
+    title: 'Supervised Go-Live & Formal Sign-Off',
+    description: 'Pemberlakuan sistem aktif untuk pencatatan transaksi riil perusahaan yang didampingi secara langsung di lokasi oleh konsultan senior hingga terbit Berita Acara (BAST).',
+    duration: 'Minggu 5 - 6',
+  },
+  {
+    number: '05',
+    title: 'Hypercare Warranty & Ongoing Strategic Partnership',
+    description: 'Masa pengawasan intensif pasca go-live guna memastikan seluruh staf lancar dan laporan keuangan konsolidasi pertama dapat ditutup secara tepat waktu tanpa kendala.',
+    duration: 'Berkelanjutan',
   },
 ];
 
-export const COMPARISON_DATA: ComparisonRow[] = [
+export const ENTERPRISE_FAQS = [
   {
-    dimension: '100% Regulasi Pajak & Kepatuhan Lokal Indonesia',
-    description: 'PPh 21 TER 2024, BPJS TK/KS, e-Faktur, Laporan Bank Indonesia, IT Inventory DJBC Bea Cukai.',
-    siscom: 'Bawaan standar (Native). Terus diupdate otomatis mengikuti keputusan Menkeu & Dirjen Pajak.',
-    odoo: 'Perlu modul 3rd-party community atau custom coding mandiri yang rawan error saat regulasi berganti.',
-    accurateJurnal: 'Cocok untuk akuntansi standar, namun tidak memiliki modul Bea Cukai atau Valas BI.',
-    sapB1: 'Memerlukan partner lokal untuk lokalisasi pajak dengan biaya add-on yang mahal.',
-    advantage: 'siscom',
+    question: 'Mengapa SISCOM ERP lebih unggul untuk industri di Indonesia dibandingkan Odoo atau SAP?',
+    answer: 'SISCOM dibangun dari bawah ke atas dengan pemahaman mendalam terhadap regulasi bisnis di Indonesia. Kepatuhan perpajakan (PPh 21 skema TER 2024, e-Faktur, PPh Final Jasa Konstruksi), format dokumen operasional, serta alur bisnis seperti RAP proyek kontraktor atau booth pameran telah tersedia secara bawaan (native). Anda tidak dibebani biaya kustomisasi tinggi atau ketergantungan pada modul pihak ketiga yang rentan rusak saat regulasi pemerintah berganti.',
   },
   {
-    dimension: 'Biaya Kustomisasi Alur Bisnis',
-    description: 'Modifikasi alur kerja, template PO/Invoice, aturan approval khusus.',
-    siscom: 'Termasuk dalam paket implementasi + custom report form gratis selama berlangganan MSC.',
-    odoo: 'Dikenakan biaya tinggi per jam development Python / Odoo Studio ($40 - $120/jam).',
-    accurateJurnal: 'Kaku (SaaS tertutup). Alur dan form cetak tidak dapat dikustomisasi mendalam.',
-    sapB1: 'Sangat mahal. Biaya konsultan implementasi SAP per manday berkisar Rp 8-15 juta.',
-    advantage: 'siscom',
+    question: 'Bagaimana penanganan keamanan data dan kepatuhan terhadap UU Perlindungan Data Pribadi (UU PDP)?',
+    answer: 'Infrastruktur cloud SISCOM berlokasi secara fisik di Tier 3/4 Data Center Jakarta, menjamin kedaulatan data di wilayah yurisdiksi Indonesia. Seluruh transmisi data dilindungi protokol TLS 1.3 dengan enkripsi AES-256 pada media penyimpanan. Sistem dilengkapi pencatatan audit trail menyeluruh dan kepemilikan data seutuhnya tetap berada di tangan perusahaan Anda dengan hak ekspor penuh.',
   },
   {
-    dimension: 'Dukungan Teknis & Jam Operasional',
-    description: 'Kanal bantuan teknis saat operasional mengalami kendala.',
-    siscom: 'Private WhatsApp Group 7 hari (08.30 - 22.00 WIB) dengan tim teknis lokal berbahasa Indonesia.',
-    odoo: 'Sistem ticketing resmi bahasa Inggris atau bergantung pada ketersediaan partner lokal.',
-    accurateJurnal: 'Live chat & email jam kerja standar Senin - Jumat (09.00 - 17.00 WIB).',
-    sapB1: 'Terikat kontrak support partner tingkat enterprise dengan jam kerja bisnis.',
-    advantage: 'siscom',
+    question: 'Apakah SISCOM ERP dapat dipasang pada server milik perusahaan kami sendiri (On-Premise)?',
+    answer: 'Ya. SISCOM mendukung model penempatan sistem yang sepenuhnya fleksibel: Dedicated Private Cloud terkelola atau Sovereign On-Premise di pusat data milik gedung kantor Anda. Model On-Premise memberikan kendali fisik mutlak dan sangat ideal bagi entitas yang memiliki protokol kerahasiaan ketat atau lokasi cabang dengan keterbatasan internet.',
   },
   {
-    dimension: 'Pilihan Penempatan Sistem (Deployment)',
-    description: 'Fleksibilitas Cloud Server vs Server Milik Sendiri (On-Premise).',
-    siscom: 'Fleksibel: Cloud SaaS terkelola, Private Cloud Indonesia, atau On-Premise server lokal.',
-    odoo: 'Odoo Online (Cloud) atau Odoo.sh / On-Premise (butuh tim DevOps Linux berpengalaman).',
-    accurateJurnal: 'Hanya Cloud Publik (tidak tersedia opsi On-Premise server milik sendiri).',
-    sapB1: 'Tersedia Cloud dan On-Premise, namun kebutuhan hardware server on-premise sangat tinggi.',
-    advantage: 'siscom',
+    question: 'Bagaimana pendekatan implementasi SISCOM untuk mencegah risiko kegagalan adopsi sistem oleh staf?',
+    answer: 'Kegagalan implementasi umumnya bukan karena software, melainkan minimnya pendampingan manusia. SISCOM menerapkan metodologi implementasi 5-tahap teruji di mana konsultan senior kami hadir langsung mendampingi tim Anda dari pemetaan alur, migrasi master data, simulasi transaksi, hingga masa hypercare 30 hari pasca Go Live sampai terbit Berita Acara Serah Terima resmi.',
   },
   {
-    dimension: 'Waktu Go Live Rata-rata',
-    description: 'Durasi dari kick-off implementasi, migrasi data, pelatihan sampai digunakan aktif.',
-    siscom: '3 - 8 Minggu (didampingi konsultan langsung sampai serah terima BAST).',
-    odoo: '3 - 9 Bulan (sering molor akibat kompleksitas modul open-source tanpa SOP baku).',
-    accurateJurnal: '1 - 2 Minggu (cepat karena sistem standar tanpa kustomisasi alur bisnis).',
-    sapB1: '6 - 18 Bulan dengan tahapan blueprinting yang panjang.',
-    advantage: 'siscom',
+    question: 'Bagaimana dukungan teknis diberikan setelah sistem beroperasi aktif?',
+    answer: 'Kami menyediakan Dedicated Enterprise Support & Responsive Technical Assistance yang dikelola langsung oleh tim spesialis lokal di Jakarta. Klien korporat mendapatkan kanal komunikasi terdedikasi dengan komitmen Service Level Agreement (SLA) waktu tanggap berjenjang, pendampingan saat terjadi pergantian staf, dan pembaruan regulasi perpajakan berkala.',
   },
   {
-    dimension: 'Kapan Kompetitor Lebih Cocok Digunakan? (Transparansi Objektif)',
-    description: 'Kondisi riil di mana software kompetitor menjadi pilihan yang lebih bijak.',
-    siscom: 'Kurang cocok untuk korporasi multinasional dengan kantor cabang di 20+ negara yang butuh konsolidasi IFRS global.',
-    odoo: 'Lebih cocok jika perusahaan memiliki tim developer in-house internal yang ingin mengotak-atik source code sendiri.',
-    accurateJurnal: 'Lebih cocok untuk toko online mikro atau UMKM 1-3 staf yang hanya butuh catat invoice sederhana.',
-    sapB1: 'Lebih cocok untuk anak perusahaan konglomerasi global yang diwajibkan integrasi ke SAP S/4HANA induk di luar negeri.',
-    advantage: 'competitor',
-  },
-];
-
-export const FAQS = [
-  {
-    q: 'Apa perbedaan utama SISCOM ERP dibandingkan software akuntansi biasa?',
-    a: 'Software akuntansi biasa umumnya hanya mencatat transaksi finansial setelah kejadian (post-factum) dan fiturnya seragam tanpa bisa dimodifikasi. SISCOM adalah ERP operasional menyeluruh: kami mengontrol alur sebelum uang keluar (misal penguncian budget RAP proyek, batas plafon piutang sales, perhitungan HPP otomatis dari lantai pabrik) dan mengintegrasikan cabang, gudang, serta karyawan ke dalam satu database terpadu.',
-  },
-  {
-    q: 'Berapa lama rata-rata proses implementasi hingga Go Live?',
-    a: 'Untuk bisnis retail atau UMKM perdagangan, waktu implementasi rata-rata adalah 2-3 minggu. Untuk distributor dan kontraktor dengan kustomisasi alur, rata-rata adalah 4-6 minggu. Untuk pabrik manufaktur kompleks atau kawasan berikat, berkisar antara 8-12 minggu. Konsultan kami mendampingi dari tahap migrasi data, konfigurasi, pelatihan staf, hingga tahap Go Live selesai ditandatangani.',
-  },
-  {
-    q: 'Bagaimana kebijakan dukungan teknis: apa yang gratis dan apa yang ada di MSC?',
-    a: 'Setiap pembelian paket sudah mencakup pendampingan implementasi, training staf, dan masa Hypercare 30 hari pasca Go Live secara penuh. Untuk dukungan berkelanjutan jangka panjang, klien didukung melalui kontrak Maintenance Support Contract (MSC) yang mencakup: grup WhatsApp pribadi 7 hari (08.30-22.00 WIB), revisi template cetak laporan tanpa batas, update gratis kepatuhan pajak/regulasi pemerintah, dan konsultasi alur tanpa biaya tambahan.',
-  },
-  {
-    q: 'Apakah SISCOM bisa dipasang di server milik kantor kami sendiri (On-Premise)?',
-    a: 'Ya, tentu. SISCOM menyediakan tiga opsi fleksibel: 1) Cloud Server terkelola di Data Center Indonesia Tier 3/4; 2) Private Cloud khusus instansi Anda; atau 3) On-Premise langsung di server lokal gedung Anda. Opsi On-Premise sangat disukai perusahaan yang memiliki kebijakan kerahasiaan data ketat atau lokasi cabang dengan keterbatasan koneksi internet.',
-  },
-  {
-    q: 'Bagaimana keamanan data perusahaan kami dijamin?',
-    a: 'Server cloud SISCOM berlokasi di Jakarta, Indonesia, sesuai dengan ketentuan UU Perlindungan Data Pribadi (UU PDP No. 27/2022). Data dienkripsi menggunakan protokol TLS 1.3 saat transmisi dan AES-256 saat penyimpanan. Sistem dilengkapi audit trail pencatatan setiap perubahan data (siapa, kapan, nilai sebelum & sesudah), backup otomatis harian H-1, serta hak ekspor data penuh bagi pemilik bisnis jika sewaktu-waktu berhenti berlangganan.',
-  },
-  {
-    q: 'Bagaimana jika staf operasional kami awam teknologi atau berganti karyawan baru?',
-    a: 'Antarmuka SISCOM dirancang dengan bahasa Indonesia yang familiar bagi akuntan dan staf logistik di Indonesia. Selama masa implementasi, staf Anda dilatih secara langsung sampai lancar. Bila terjadi pergantian karyawan di kemudian hari, klien pemegang MSC berhak atas sesi training penyegaran bagi karyawan baru tanpa biaya konsultasi tambahan.',
-  },
-  {
-    q: 'Apakah ada biaya tersembunyi untuk penambahan fitur atau laporan?',
-    a: 'Tidak ada biaya tersembunyi. Semua poin kustomisasi alur disepakati dalam Scope of Work (SOW) di awal. Selain itu, permintaan penyesuaian format cetak (seperti template faktur pajak, PO, surat jalan, voucher kas, slip gaji) bebas biaya bagi pemegang kontrak MSC aktif.',
-  },
-  {
-    q: 'Bagaimana cara menjadwalkan demo sistem untuk tim direksi kami?',
-    a: 'Anda dapat mengisi formulir jadwal demo 3-langkah di situs ini atau menghubungi tim sales kami via WhatsApp di 0812-9981-7515. Tim konsultan solusi kami akan menghubungi Anda dalam waktu 1 jam kerja untuk menyesuaikan materi demo dengan jenis industri dan tantangan spesifik perusahaan Anda.',
+    question: 'Berapa lama rata-rata durasi waktu dari tahap kick-off hingga Go Live resmi?',
+    answer: 'Durasi implementasi bervariasi bergantung pada skala entitas dan kompleksitas modul: 2 hingga 4 minggu untuk retail modern dan manajemen properti; 4 hingga 8 minggu untuk kontraktor proyek dan pabrik manufaktur. Setiap tahapan diatur secara ketat dalam Project Charter yang disepakati bersama di awal kerja sama.',
   },
 ];
