@@ -7,12 +7,8 @@ import {
   CheckCircle2, 
   ArrowRight, 
   ArrowLeft, 
-  Building2, 
   Clock, 
-  ShieldCheck, 
-  Phone, 
-  Calendar,
-  Lock
+  Phone
 } from 'lucide-react';
 
 interface ConsultationModalProps {
@@ -119,19 +115,19 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-150">
-      <div className="bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl max-w-xl w-full overflow-hidden flex flex-col max-h-[92vh] text-slate-100">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl max-w-xl w-full overflow-hidden flex flex-col max-h-[92vh] text-slate-800 dark:text-slate-100 transition-colors">
         {/* Modal Header */}
-        <div className="p-5 px-6 border-b border-slate-800 flex items-center justify-between bg-slate-950">
+        <div className="p-5 px-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono font-bold uppercase tracking-wider text-orange-400">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">
                 Konsultasi Arsitektur Solusi
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-[10px] text-slate-400 font-mono">
+              <span className="px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-[10px] text-slate-600 dark:text-slate-400 font-mono">
                 {step < 4 ? `Tahap ${step} dari 3` : 'Dikonfirmasi'}
               </span>
             </div>
-            <h3 className="text-base font-bold text-white mt-1">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white mt-1">
               {step === 1 && 'Sektor Industri & Skala Organisasi'}
               {step === 2 && 'Fokus Kebutuhan & Alur Kerja Spesifik'}
               {step === 3 && 'Informasi Kontak & Jadwal Sesi'}
@@ -141,7 +137,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             aria-label="Tutup formulir konsultasi"
           >
             <X className="w-5 h-5" />
@@ -150,7 +146,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
         {/* Step Progress Bar */}
         {step < 4 && (
-          <div className="w-full bg-slate-800 h-1 flex">
+          <div className="w-full bg-slate-200 dark:bg-slate-800 h-1 flex">
             <div
               className="bg-orange-500 transition-all duration-300"
               style={{ width: `${(step / 3) * 100}%` }}
@@ -159,17 +155,17 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
         )}
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto space-y-4 text-xs flex-1">
+        <div className="p-6 overflow-y-auto space-y-4 text-xs flex-1 font-normal">
           {step === 1 && (
             <div className="space-y-4">
               <div>
-                <label className="block font-semibold text-slate-200 mb-1.5">
-                  Sektor Industri Utama Perusahaan <span className="text-orange-400">*</span>
+                <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+                  Sektor Industri Utama Perusahaan <span className="text-orange-500">*</span>
                 </label>
                 <select
                   value={formData.industry}
                   onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-950 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
                 >
                   <option value="Kontraktor & Konstruksi">Kontraktor & Konstruksi (Sipil, MEP, Interior)</option>
                   <option value="Exhibition Contractor">Exhibition Contractor & Booth Builder</option>
@@ -179,12 +175,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                   <option value="Manufaktur & Fabrikasi">Manufaktur & Fabrikasi (BOM & HPP)</option>
                   <option value="Rental Aset & Alat Berat">Rental Aset & Alat Berat</option>
                 </select>
-                {errors.industry && <p className="text-[11px] text-rose-400 mt-1">{errors.industry}</p>}
+                {errors.industry && <p className="text-[11px] text-rose-500 mt-1">{errors.industry}</p>}
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-200 mb-1.5">
-                  Rentang Jumlah Karyawan / Personel Aktif <span className="text-orange-400">*</span>
+                <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+                  Rentang Jumlah Karyawan / Personel Aktif <span className="text-orange-500">*</span>
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {['1-20 Personel', '21-50 Personel', '51-200 Personel', '>200 Personel'].map((sc) => (
@@ -194,19 +190,19 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                       onClick={() => setFormData({ ...formData, companyScale: sc.split(' ')[0] })}
                       className={`py-2 px-3 rounded-xl border text-xs font-semibold text-center transition ${
                         formData.companyScale === sc.split(' ')[0]
-                          ? 'border-orange-500 bg-orange-500/15 text-orange-400 shadow-sm'
-                          : 'border-slate-800 bg-slate-950/60 text-slate-400 hover:text-white'
+                          ? 'border-orange-500 bg-orange-500/15 text-orange-600 dark:text-orange-400 shadow-sm'
+                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       {sc}
                     </button>
                   ))}
                 </div>
-                {errors.companyScale && <p className="text-[11px] text-rose-400 mt-1">{errors.companyScale}</p>}
+                {errors.companyScale && <p className="text-[11px] text-rose-500 mt-1">{errors.companyScale}</p>}
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-200 mb-1.5">
+                <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                   Preferensi Penempatan Sistem (Deployment)
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -215,24 +211,24 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                     onClick={() => setFormData({ ...formData, preferredDeployment: 'cloud' })}
                     className={`p-3 rounded-xl border text-left transition ${
                       formData.preferredDeployment === 'cloud'
-                        ? 'border-orange-500 bg-orange-500/15 text-white'
-                        : 'border-slate-800 bg-slate-950/60 text-slate-400'
+                        ? 'border-orange-500 bg-orange-500/15 text-slate-900 dark:text-white'
+                        : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400'
                     }`}
                   >
-                    <span className="font-bold text-xs block text-white">Private Cloud Indonesia</span>
-                    <span className="text-[11px] text-slate-400">Data Center Tier 3 Jakarta, backup terkelola</span>
+                    <span className="font-bold text-xs block text-slate-900 dark:text-white">Private Cloud Indonesia</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">Data Center Tier 3 Jakarta, backup terkelola</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, preferredDeployment: 'on-premise' })}
                     className={`p-3 rounded-xl border text-left transition ${
                       formData.preferredDeployment === 'on-premise'
-                        ? 'border-orange-500 bg-orange-500/15 text-white'
-                        : 'border-slate-800 bg-slate-950/60 text-slate-400'
+                        ? 'border-orange-500 bg-orange-500/15 text-slate-900 dark:text-white'
+                        : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400'
                     }`}
                   >
-                    <span className="font-bold text-xs block text-white">On-Premise Server Sendiri</span>
-                    <span className="text-[11px] text-slate-400">Instalasi di ruang server kantor korporat</span>
+                    <span className="font-bold text-xs block text-slate-900 dark:text-white">On-Premise Server Sendiri</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">Instalasi di ruang server kantor korporat</span>
                   </button>
                 </div>
               </div>
@@ -242,10 +238,10 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
           {step === 2 && (
             <div className="space-y-4">
               <div>
-                <label className="block font-semibold text-slate-200 mb-1">
-                  Pilih Fokus Alur Kerja yang Perlu Dibenahi <span className="text-orange-400">*</span>
+                <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1">
+                  Pilih Fokus Alur Kerja yang Perlu Dibenahi <span className="text-orange-500">*</span>
                 </label>
-                <p className="text-slate-400 text-[11px] mb-3">
+                <p className="text-slate-500 dark:text-slate-400 text-[11px] mb-3">
                   Pilih fokus utama agar materi demonstrasi sesuai dengan tantangan riil perusahaan.
                 </p>
 
@@ -266,14 +262,14 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                       onClick={() => handleChallengeToggle(ch)}
                       className={`p-2.5 rounded-xl border text-left text-xs font-medium flex items-center gap-2 transition ${
                         formData.primaryChallenges.includes(ch)
-                          ? 'border-orange-500 bg-orange-500/15 text-orange-200 font-semibold'
-                          : 'border-slate-800 bg-slate-950/60 text-slate-400 hover:text-white'
+                          ? 'border-orange-500 bg-orange-500/15 text-orange-700 dark:text-orange-200 font-semibold'
+                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       <div className={`w-3.5 h-3.5 rounded flex items-center justify-center border ${
                         formData.primaryChallenges.includes(ch)
-                          ? 'bg-orange-500 border-orange-500 text-slate-950'
-                          : 'border-slate-600 bg-slate-950'
+                          ? 'bg-orange-500 border-orange-500 text-white dark:text-slate-950'
+                          : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-950'
                       }`}>
                         {formData.primaryChallenges.includes(ch) && <CheckCircle2 className="w-3.5 h-3.5" />}
                       </div>
@@ -281,11 +277,11 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                     </button>
                   ))}
                 </div>
-                {errors.primaryChallenges && <p className="text-[11px] text-rose-400 mt-1">{errors.primaryChallenges}</p>}
+                {errors.primaryChallenges && <p className="text-[11px] text-rose-500 mt-1">{errors.primaryChallenges}</p>}
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-200 mb-1">
+                <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1">
                   Catatan Tambahan (Opsional)
                 </label>
                 <textarea
@@ -293,7 +289,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                   placeholder="Ceritakan kendala sistem lama atau jumlah entitas anak perusahaan..."
                   value={formData.inquiryScope}
                   onChange={(e) => setFormData({ ...formData, inquiryScope: e.target.value })}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-700 bg-slate-950 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
                 ></textarea>
               </div>
             </div>
@@ -303,66 +299,66 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
             <div className="space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-200 mb-1">
-                    Nama Lengkap <span className="text-orange-400">*</span>
+                  <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1">
+                    Nama Lengkap <span className="text-orange-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="Budi Santoso"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-950 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
                   />
-                  {errors.fullName && <p className="text-[11px] text-rose-400 mt-0.5">{errors.fullName}</p>}
+                  {errors.fullName && <p className="text-[11px] text-rose-500 mt-0.5">{errors.fullName}</p>}
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-200 mb-1">
-                    Nama Perusahaan / Korporasi <span className="text-orange-400">*</span>
+                  <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1">
+                    Nama Perusahaan / Korporasi <span className="text-orange-500">*</span>
                   </label>
                   <input
                     type="text"
                     placeholder="PT Bangun Jaya Perkasa"
                     value={formData.companyName}
                     onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-950 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
                   />
-                  {errors.companyName && <p className="text-[11px] text-rose-400 mt-0.5">{errors.companyName}</p>}
+                  {errors.companyName && <p className="text-[11px] text-rose-500 mt-0.5">{errors.companyName}</p>}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-200 mb-1">
-                    Email Kerja (Corporate Domain) <span className="text-orange-400">*</span>
+                  <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1">
+                    Email Kerja (Corporate Domain) <span className="text-orange-500">*</span>
                   </label>
                   <input
                     type="email"
                     placeholder="budi@bangunjaya.co.id"
                     value={formData.workEmail}
                     onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-950 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
                   />
-                  {errors.workEmail && <p className="text-[11px] text-rose-400 mt-0.5">{errors.workEmail}</p>}
+                  {errors.workEmail && <p className="text-[11px] text-rose-500 mt-0.5">{errors.workEmail}</p>}
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-200 mb-1">
-                    Nomor WhatsApp PIC <span className="text-orange-400">*</span>
+                  <label className="block font-semibold text-slate-800 dark:text-slate-200 mb-1">
+                    Nomor WhatsApp PIC <span className="text-orange-500">*</span>
                   </label>
                   <input
                     type="tel"
                     placeholder="0812XXXXXXXX"
                     value={formData.whatsapp}
                     onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-700 bg-slate-950 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
                   />
-                  {errors.whatsapp && <p className="text-[11px] text-rose-400 mt-0.5">{errors.whatsapp}</p>}
+                  {errors.whatsapp && <p className="text-[11px] text-rose-500 mt-0.5">{errors.whatsapp}</p>}
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400 flex items-start gap-2">
-                <Clock className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+              <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400 flex items-start gap-2">
+                <Clock className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
                 <span>
                   <strong>Komitmen Respon:</strong> Tim spesialis solusi SISCOM akan menghubungi Anda via WhatsApp dalam waktu <strong>maksimal 1 jam kerja</strong> untuk konfirmasi jadwal video conference dan ringkasan arsitektur.
                 </span>
@@ -372,29 +368,29 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
           {step === 4 && scoreResult && (
             <div className="space-y-4 py-3 text-center">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
 
               <div>
-                <h4 className="text-lg font-bold text-white">Jadwal Sesi Konsultasi Diterima</h4>
-                <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+                <h4 className="text-lg font-bold text-slate-900 dark:text-white">Jadwal Sesi Konsultasi Diterima</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-md mx-auto font-normal">
                   Terima kasih, <strong>{formData.fullName}</strong>. Data pengajuan konsultasi untuk <strong>{formData.companyName}</strong> telah diteruskan ke konsultan spesialis sektor <strong>{formData.industry}</strong> kami.
                 </p>
               </div>
 
-              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 text-left space-y-2 text-xs">
+              <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-left space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400 font-medium">Prioritas Penugasan Konsultan:</span>
-                  <span className="font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[11px]">
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">Prioritas Penugasan Konsultan:</span>
+                  <span className="font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 text-[11px]">
                     Grade {scoreResult.grade} • {scoreResult.urgency}
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-500">
+                <div className="text-[11px] text-slate-600 dark:text-slate-400">
                   Tim kami akan menyiapkan skenario demonstrasi modul:
                   <div className="mt-1 flex flex-wrap gap-1">
                     {formData.primaryChallenges.map((c, i) => (
-                      <span key={i} className="bg-slate-900 border border-slate-800 text-slate-300 px-2 py-0.5 rounded text-[10px]">
+                      <span key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded text-[10px]">
                         {c}
                       </span>
                     ))}
@@ -418,7 +414,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                 </a>
                 <button
                   onClick={onClose}
-                  className="py-3 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs"
+                  className="py-3 px-5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-300 font-semibold text-xs"
                 >
                   Selesai
                 </button>
@@ -429,12 +425,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
         {/* Modal Footer Controls */}
         {step < 4 && (
-          <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
+          <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={() => setStep((prev) => (prev - 1) as any)}
-                className="px-4 py-2 rounded-xl text-slate-400 hover:text-white font-semibold text-xs flex items-center gap-1"
+                className="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-semibold text-xs flex items-center gap-1"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Sebelumnya</span>
@@ -446,7 +442,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
             <button
               type="button"
               onClick={handleNext}
-              className="px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md flex items-center gap-2 active:scale-95 transition-all"
             >
               <span>{step === 3 ? 'Kirim Jadwal Konsultasi' : 'Lanjutkan'}</span>
               <ArrowRight className="w-3.5 h-3.5" />

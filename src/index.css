@@ -1,1 +1,69 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Smooth transition for theme switching */
+html {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* 3D Mascot Custom Enterprise Animations */
+@keyframes mascotFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+@keyframes mascotShadow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(0.85);
+    opacity: 0.18;
+  }
+}
+
+@keyframes antennaGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.95)) drop-shadow(0 0 24px rgba(234, 88, 12, 0.5));
+  }
+}
+
+@keyframes pulseLed {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+}
+
+.animate-mascot-float {
+  animation: mascotFloat 4.5s ease-in-out infinite;
+}
+
+.animate-mascot-shadow {
+  animation: mascotShadow 4.5s ease-in-out infinite;
+}
+
+.animate-antenna-glow {
+  animation: antennaGlow 3s ease-in-out infinite;
+}
+
+.animate-pulse-led {
+  animation: pulseLed 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -19,7 +19,7 @@ export const Stats: React.FC = () => {
     {
       metric: '1994',
       title: 'Tiga Dekade Rekayasa Lokal',
-      description: 'Pengalaman rekayasa perangkat lunak enterprise berkesinambungan di Indonesia.',
+      description: 'Pengalaman rekayasa perangkat lunak enterprise berkesinambungan di Indonesia sejak 1994.',
       icon: Award,
     },
     {
@@ -31,7 +31,7 @@ export const Stats: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 bg-slate-950 border-b border-slate-800/80">
+    <section className="py-12 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800/80 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((item, idx) => {
@@ -39,19 +39,19 @@ export const Stats: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition-colors duration-150 flex flex-col justify-between"
+                className="p-6 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 hover:border-orange-500/40 dark:hover:border-slate-700 shadow-sm transition-all duration-150 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight">
+                    <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white font-mono tracking-tight">
                       {item.metric}
                     </span>
-                    <div className="p-2 rounded-lg bg-slate-800/80 text-orange-400">
+                    <div className="p-2 rounded-lg bg-orange-500/10 dark:bg-slate-800/80 text-orange-600 dark:text-orange-400">
                       <Icon className="w-4 h-4" />
                     </div>
                   </div>
-                  <h3 className="text-sm font-bold text-slate-100">{item.title}</h3>
-                  <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{item.title}</h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed font-normal">
                     {item.description}
                   </p>
                 </div>
