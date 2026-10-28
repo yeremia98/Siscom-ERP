@@ -2,5 +2,7 @@
   "name": "SISCOM ERP - Software ERP & Akuntansi Indonesia",
   "description": "Software ERP lokal Indonesia terintegrasi untuk manufaktur, distributor, kontraktor, retail, dan regulasi khusus dengan pendampingan sampai Go Live.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
