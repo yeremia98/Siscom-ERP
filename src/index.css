@@ -2,68 +2,63 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Smooth transition for theme switching */
+/* Swiss Minimalist B2B Theme Configuration */
+:root {
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+
+  --color-brand-900: #0B2447;
+  --color-brand-800: #123466;
+  --color-brand-surface: #EBF2FA;
+  --color-neutral-bg: #FAFAF7;
+  --color-surface-muted: #F1F1EC;
+  --color-border-subtle: #E5E7EB;
+}
+
 html {
-  transition: background-color 0.25s ease, color 0.25s ease;
+  font-family: var(--font-body);
+  background-color: var(--color-neutral-bg);
+  color: #111827;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  scroll-behavior: smooth;
+}
+
+html.dark {
+  background-color: #080E1E;
+  color: #F3F4F6;
 }
 
 body {
-  transition: background-color 0.25s ease, color 0.25s ease;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* 3D Mascot Custom Enterprise Animations */
-@keyframes mascotFloat {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(1deg);
-  }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
 }
 
-@keyframes mascotShadow {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.35;
-  }
-  50% {
-    transform: scale(0.85);
-    opacity: 0.18;
-  }
+code, kbd, samp, pre, .font-mono {
+  font-family: var(--font-mono);
 }
 
-@keyframes antennaGlow {
-  0%, 100% {
-    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.4));
-  }
-  50% {
-    filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.95)) drop-shadow(0 0 24px rgba(234, 88, 12, 0.5));
-  }
+/* Custom scrollbar for data tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-@keyframes pulseLed {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(0.9);
-  }
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.animate-mascot-float {
-  animation: mascotFloat 4.5s ease-in-out infinite;
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 3px;
 }
 
-.animate-mascot-shadow {
-  animation: mascotShadow 4.5s ease-in-out infinite;
-}
-
-.animate-antenna-glow {
-  animation: antennaGlow 3s ease-in-out infinite;
-}
-
-.animate-pulse-led {
-  animation: pulseLed 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.6);
 }

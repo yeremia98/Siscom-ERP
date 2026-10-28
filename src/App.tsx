@@ -1,34 +1,33 @@
 /**
- * @license
- * SPDX-License-Identifier: Apache-2.0
+ * SISCOM ERP (siscom.co.id) SPA Main Application
+ * Adheres strictly to Swiss/Minimalism B2B SaaS architecture and anti-AI-slop rules.
  */
 
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { Stats } from './components/Stats';
-import { ClientPortfolioSection } from './components/ClientPortfolioSection';
-import { ModulesSection } from './components/ModulesSection';
-import { CapabilitiesSection } from './components/CapabilitiesSection';
-import { MethodologySection } from './components/MethodologySection';
-import { SecurityCompliance } from './components/SecurityCompliance';
+import { ModulesBento } from './components/ModulesBento';
+import { SegmentSelector } from './components/SegmentSelector';
+import { ImplementationTimeline } from './components/ImplementationTimeline';
+import { DeploymentComparison } from './components/DeploymentComparison';
+import { ClientGrid } from './components/ClientGrid';
 import { FaqSection } from './components/FaqSection';
-import { CallToAction } from './components/CallToAction';
 import { Footer } from './components/Footer';
-import { ConsultationModal } from './components/ConsultationModal';
-import { FloatingWidgets } from './components/FloatingWidgets';
+import { DemoPage } from './components/DemoPage';
+import { EstimasiPage } from './components/EstimasiPage';
+import { VerifikasiPage } from './components/VerifikasiPage';
 import { ProductDetailPage } from './components/ProductDetailPage';
-import { DedicatedFaqPage } from './components/DedicatedFaqPage';
-import { DedicatedBlogPage } from './components/DedicatedBlogPage';
-import { analytics } from './utils/analytics';
-import { ArrowRight, Phone } from 'lucide-react';
-import { VERIFIED_CONTACTS } from './data/erpData';
+import { IndustriPage } from './components/IndustriPage';
+import { LayananPage } from './components/LayananPage';
+import { KlienPage } from './components/KlienPage';
+import { NotFoundPage } from './components/NotFoundPage';
+import { MessageSquare, PhoneCall } from 'lucide-react';
+import { COMPANY_DATA } from './content/company';
 
 function AppContent() {
   const [currentRoute, setCurrentRoute] = useState<string>(() => {
     if (typeof window === 'undefined') return '/';
-    // Support pathname or hash-based route fallback
     const path = window.location.pathname;
     if (path && path !== '/') return path;
     const hash = window.location.hash.replace('#', '');
@@ -36,10 +35,7 @@ function AppContent() {
     return '/';
   });
 
-  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
-  const [prefilledSector, setPrefilledSector] = useState<string | undefined>();
-
-  // Sync browser popstate (back/forward navigation)
+  // Handle browser popstate navigation (Back / Forward)
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname || '/';
@@ -52,136 +48,104 @@ function AppContent() {
   }, []);
 
   const handleNavigate = (route: string) => {
+    // If it's a section anchor on home page
+    if (route.startsWith('/#')) {
+      const anchorId = route.replace('/#', '');
+      if (currentRoute !== '/') {
+        setCurrentRoute('/');
+        try {
+          window.history.pushState({}, '', '/');
+        } catch {
+          // ignore
+        }
+      }
+      setTimeout(() => {
+        const el = document.getElementById(anchorId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 50);
+      return;
+    }
+
     setCurrentRoute(route);
     try {
       window.history.pushState({}, '', route);
     } catch {
-      // Fallback for strict sandbox iframe environments
       window.location.hash = route;
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    analytics.track('page_view', { page_path: route });
   };
 
-  const handleOpenConsultation = (sector?: string) => {
-    setPrefilledSector(sector);
-    setIsConsultationOpen(true);
-    analytics.track('form_start', {
-      form_name: 'enterprise_consultation',
-      sector: sector || 'general',
-    });
-  };
-
-  // Route View Resolver
-  const renderRouteView = () => {
-    if (currentRoute.startsWith('/product/')) {
-      const slug = currentRoute.replace('/product/', '').split('/')[0];
+  // Route Resolver
+  const renderCurrentRoute = () => {
+    if (currentRoute === '/' || currentRoute === '') {
       return (
-        <ProductDetailPage
-          slug={slug}
-          onNavigate={handleNavigate}
-          onOpenConsultation={handleOpenConsultation}
-        />
+        <main>
+          <Hero onNavigate={handleNavigate} />
+          <ModulesBento onNavigate={handleNavigate} />
+          <SegmentSelector onNavigate={handleNavigate} />
+          <ImplementationTimeline />
+          <DeploymentComparison />
+          <ClientGrid onNavigate={handleNavigate} />
+          <FaqSection onNavigate={handleNavigate} />
+        </main>
       );
     }
 
-    if (currentRoute === '/faq') {
-      return (
-        <DedicatedFaqPage
-          onNavigate={handleNavigate}
-          onOpenConsultation={handleOpenConsultation}
-        />
-      );
+    if (currentRoute.startsWith('/produk/')) {
+      const slug = currentRoute.replace('/produk/', '');
+      return <ProductDetailPage slug={slug} onNavigate={handleNavigate} />;
     }
 
-    if (currentRoute === '/blog') {
-      return (
-        <DedicatedBlogPage
-          onNavigate={handleNavigate}
-          onOpenConsultation={handleOpenConsultation}
-        />
-      );
+    if (currentRoute === '/industri') {
+      return <IndustriPage onNavigate={handleNavigate} />;
     }
 
-    // Default Home View
-    return (
-      <main className="flex-1" id="main-content">
-        {/* AstroWind Hero with 3D Mascot & Dashboard */}
-        <Hero onNavigate={handleNavigate} onOpenConsultation={handleOpenConsultation} />
+    if (currentRoute === '/layanan') {
+      return <LayananPage onNavigate={handleNavigate} />;
+    }
 
-        {/* AstroWind Stats Strip */}
-        <Stats />
+    if (currentRoute === '/klien') {
+      return <KlienPage onNavigate={handleNavigate} />;
+    }
 
-        {/* Enterprise Client Portfolio & Industrial References from siscom.co.id */}
-        <ClientPortfolioSection onOpenConsultation={handleOpenConsultation} />
+    if (currentRoute === '/demo') {
+      return <DemoPage onNavigate={handleNavigate} />;
+    }
 
-        {/* Industry Modules Deep-Dive (7 Core Modules) */}
-        <ModulesSection onOpenConsultation={handleOpenConsultation} />
+    if (currentRoute === '/estimasi') {
+      return <EstimasiPage onNavigate={handleNavigate} />;
+    }
 
-        {/* Enterprise Architecture & Comparison vs Odoo/Salesforce */}
-        <CapabilitiesSection onOpenConsultation={() => handleOpenConsultation()} />
+    if (currentRoute === '/verifikasi') {
+      return <VerifikasiPage onNavigate={handleNavigate} />;
+    }
 
-        {/* 5-Step Implementation Methodology */}
-        <MethodologySection onOpenConsultation={() => handleOpenConsultation()} />
-
-        {/* Security, Data Sovereignty & Tax Compliance */}
-        <SecurityCompliance />
-
-        {/* Enterprise Technical FAQ Accordion */}
-        <FaqSection />
-
-        {/* Executive Call To Action Banner */}
-        <CallToAction onOpenConsultation={() => handleOpenConsultation()} />
-      </main>
-    );
+    return <NotFoundPage onNavigate={handleNavigate} />;
   };
+
+  const whatsappUrl = `https://wa.me/62${COMPANY_DATA.whatsappPrimary.replace(/[-+ ]/g, '').replace(/^0/, '')}?text=Halo%20SISCOM,%20saya%20ingin%20berkonsultasi%20mengenai%20kebutuhan%20software%20ERP.`;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-orange-500 selection:text-white transition-colors duration-200">
-      {/* AstroWind Enterprise Header with Theme Toggle & Mega Menu */}
-      <Header
-        currentRoute={currentRoute}
-        onNavigate={handleNavigate}
-        onOpenConsultation={handleOpenConsultation}
-      />
+    <div className="min-h-screen flex flex-col bg-[#FAFAF7] dark:bg-[#080E1E] text-slate-900 dark:text-slate-100 antialiased font-sans selection:bg-[#0B2447] selection:text-white dark:selection:bg-amber-400 dark:selection:text-slate-950">
+      <Header currentRoute={currentRoute} onNavigate={handleNavigate} />
 
-      {/* Main Dynamic View */}
-      {renderRouteView()}
+      <div className="flex-1">{renderCurrentRoute()}</div>
 
-      {/* Corporate Footer with Official Details */}
-      <Footer onNavigate={handleNavigate} onOpenConsultation={handleOpenConsultation} />
+      <Footer onNavigate={handleNavigate} />
 
-      {/* Enterprise Floating Speed Dial & Scroll-To-Top */}
-      <FloatingWidgets onOpenConsultation={handleOpenConsultation} />
-
-      {/* Sticky Mobile Bottom Enterprise Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 p-3 px-4 flex items-center gap-2 shadow-2xl">
-        <button
-          onClick={() => handleOpenConsultation()}
-          className="flex-1 py-3 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-lg shadow-orange-600/30 flex items-center justify-center gap-1.5 active:scale-95 transition-all"
-        >
-          <span>Jadwalkan Konsultasi</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
-
-        <a
-          href={`https://wa.me/6281299817515?text=${encodeURIComponent('Halo Tim SISCOM, saya ingin konsultasi sistem ERP Enterprise.')}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="p-3 px-4 rounded-xl border border-emerald-600/60 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-bold text-xs flex items-center gap-1.5 shrink-0"
-          title="WhatsApp Sales"
-        >
-          <Phone className="w-4 h-4 text-emerald-500" />
-          <span className="hidden sm:inline">WhatsApp</span>
-        </a>
-      </div>
-
-      {/* Interactive Enterprise Consultation Modal */}
-      <ConsultationModal
-        isOpen={isConsultationOpen}
-        onClose={() => setIsConsultationOpen(false)}
-        prefilledSector={prefilledSector}
-      />
+      {/* Single, Minimalist Floating WhatsApp Action (No mascot, no fake bot) */}
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-lg hover:shadow-xl transition-all focus-visible:outline-2 focus-visible:outline-emerald-500"
+        aria-label="Konsultasi WhatsApp Resmi SISCOM"
+      >
+        <PhoneCall className="w-4 h-4" />
+        <span className="hidden sm:inline">WhatsApp Konsultasi</span>
+      </a>
     </div>
   );
 }
