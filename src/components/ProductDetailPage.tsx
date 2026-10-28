@@ -1,194 +1,205 @@
 import React from 'react';
-import { ArrowLeft, Check, ArrowRight, ShieldCheck, FileText, CheckCircle2, Building2 } from 'lucide-react';
-import { PRODUCT_SUITES } from '../content/products';
+import { MEGA_MENU_SUITES, EnterpriseSuite, VERIFIED_CONTACTS } from '../data/erpData';
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  CheckCircle2, 
+  ShieldCheck, 
+  Building2, 
+  Phone, 
+  Sparkles,
+  Layers,
+  FileCheck2,
+  Users
+} from 'lucide-react';
 
 interface ProductDetailPageProps {
   slug: string;
   onNavigate: (route: string) => void;
+  onOpenConsultation: (sector?: string) => void;
 }
 
-export function ProductDetailPage({ slug, onNavigate }: ProductDetailPageProps) {
-  const product = PRODUCT_SUITES.find((p) => p.slug === slug) || PRODUCT_SUITES[0];
+export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
+  slug,
+  onNavigate,
+  onOpenConsultation,
+}) => {
+  const currentSuite: EnterpriseSuite = 
+    MEGA_MENU_SUITES.find((s) => s.slug === slug) || MEGA_MENU_SUITES[0];
 
   return (
-    <div className="py-12 bg-[#FAFAF7] dark:bg-[#080E1E] min-h-screen transition-colors">
-      <div className="max-w-[1024px] mx-auto px-4 sm:px-6">
-        {/* Navigation Breadcrumb */}
-        <button
-          onClick={() => onNavigate('/#produk')}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Kembali ke Daftar Modul
-        </button>
+    <div className="py-12 px-4 sm:px-6 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen transition-colors">
+      <div className="max-w-5xl mx-auto space-y-10">
+        {/* Breadcrumb Navigation */}
+        <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <button
+            onClick={() => onNavigate('/')}
+            className="hover:text-orange-600 dark:hover:text-orange-400 font-medium flex items-center gap-1 transition"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Beranda</span>
+          </button>
+          <span>/</span>
+          <button
+            onClick={() => {
+              onNavigate('/');
+              setTimeout(() => {
+                const el = document.getElementById('modul');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+            className="hover:text-orange-600 dark:hover:text-orange-400 font-medium transition"
+          >
+            Modul Solusi
+          </button>
+          <span>/</span>
+          <span className="text-slate-900 dark:text-white font-bold">{currentSuite.title}</span>
+        </div>
 
-        {/* Product Hero Banner */}
-        <div
-          className="bg-white dark:bg-[#111D38] rounded-xl border border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-sm space-y-6 border-t-4"
-          style={{ borderTopColor: product.accentHex }}
-        >
+        {/* Hero Header Card */}
+        <div className="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200">
-              {product.category}
+            <span className="px-3.5 py-1.5 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-bold uppercase tracking-wider border border-orange-500/20">
+              {currentSuite.category}
             </span>
-            <span
-              className="text-xs font-mono font-bold"
-              style={{ color: product.accentHex }}
-            >
-              {product.track}
+            <span className="text-xs px-3 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold border border-slate-200 dark:border-slate-700">
+              {currentSuite.badge}
             </span>
           </div>
 
           <div className="space-y-3">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-              {product.name}
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              {currentSuite.title}
             </h1>
-            <p className="text-lg font-medium text-slate-700 dark:text-slate-200 leading-snug">
-              {product.tagline}
+            <p className="text-lg sm:text-xl font-bold text-slate-700 dark:text-slate-300">
+              {currentSuite.tagline}
             </p>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl">
-              {product.summary}
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal max-w-3xl">
+              {currentSuite.summary}
             </p>
           </div>
 
-          {/* Action CTAs */}
           <div className="pt-2 flex flex-wrap items-center gap-4">
-            <a
-              href="/demo"
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate('/demo');
-              }}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold bg-[#0B2447] hover:bg-[#071930] text-white dark:bg-amber-400 dark:hover:bg-amber-300 dark:text-slate-950 transition-colors shadow-xs"
+            <button
+              onClick={() => onOpenConsultation(currentSuite.category)}
+              className="px-6 py-3.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-orange-600/20 transition flex items-center gap-2 active:scale-95"
             >
-              Jadwalkan demo {product.name}
+              <span>Jadwalkan Demo Solusi Ini</span>
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
 
             <a
-              href="/estimasi"
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate('/estimasi');
-              }}
-              className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-3"
+              href={`https://wa.me/6281299817515?text=${encodeURIComponent(`Halo SISCOM, saya ingin mengetahui lebih detail mengenai modul ${currentSuite.title}.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-3.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-sm transition flex items-center gap-2"
             >
-              Hitung estimasi implementasi &rarr;
+              <Phone className="w-4 h-4 text-emerald-500" />
+              <span>Tanya Sales WhatsApp</span>
             </a>
           </div>
         </div>
 
-        {/* Key Documents Strip */}
-        <div className="mt-8 bg-slate-100/70 dark:bg-slate-900/60 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3">
-          <span className="text-xs font-mono uppercase tracking-wider text-slate-400 block">
-            Dokumen dan Laporan Kunci yang Dihasilkan
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {product.keyDocuments.map((doc) => (
-              <span
-                key={doc}
-                className="text-xs font-mono font-medium px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 shadow-xs"
-              >
-                {doc}
-              </span>
-            ))}
+        {/* 2-Column Deep-Dive Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Key Workflows */}
+          <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+            <div className="flex items-center gap-2.5">
+              <Layers className="w-5 h-5 text-orange-500" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Alur Kerja Operasional Utama
+              </h2>
+            </div>
+            <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              {currentSuite.keyWorkflows.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="leading-relaxed font-medium">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Business Value & ROI */}
+          <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-5 h-5 text-blue-500" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Dampak Bisnis & Efisiensi Biaya
+              </h2>
+            </div>
+            <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              {currentSuite.businessValue.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <span className="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold flex items-center justify-center shrink-0 text-xs">
+                    {idx + 1}
+                  </span>
+                  <span className="leading-relaxed font-medium">{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Detailed Capabilities Grid */}
-        <div className="mt-10 space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-            Fitur dan Kendali Operasional
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {product.features.map((feat) => (
-              <div
-                key={feat.name}
-                className="bg-white dark:bg-[#111D38] p-5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-slate-900 dark:text-white">
-                    {feat.name}
-                  </h3>
-                  {feat.documentRef && (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
-                      {feat.documentRef}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                  {feat.description}
-                </p>
-              </div>
-            ))}
+        {/* Compliance & Ideal For Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Compliance & Regulation */}
+          <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-5 h-5 text-emerald-500" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Kepatuhan Regulasi Indonesia
+              </h2>
+            </div>
+            <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              {currentSuite.complianceHighlights.map((item, idx) => (
+                <li key={idx} className="flex items-start gap-3">
+                  <FileCheck2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="leading-relaxed font-medium">{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
 
-        {/* Workflow Steps */}
-        <div className="mt-12 bg-white dark:bg-[#111D38] p-6 sm:p-8 rounded-xl border border-slate-200 dark:border-slate-800 space-y-6">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-            Alur Kerja Standar di Sistem
-          </h2>
-
-          <div className="space-y-3">
-            {product.workflowSteps.map((step, idx) => (
-              <div
-                key={step}
-                className="flex items-start gap-3 p-3.5 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 text-xs"
-              >
-                <span className="w-6 h-6 rounded-md bg-[#0B2447] text-white dark:bg-amber-400 dark:text-slate-950 font-mono font-bold flex items-center justify-center shrink-0 text-[11px]">
-                  0{idx + 1}
+          {/* Ideal For */}
+          <div className="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
+            <div className="flex items-center gap-2.5">
+              <Building2 className="w-5 h-5 text-indigo-500" />
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Paling Sesuai Digunakan Oleh
+              </h2>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {currentSuite.idealFor.map((item, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-semibold border border-slate-200 dark:border-slate-700"
+                >
+                  {item}
                 </span>
-                <span className="text-slate-800 dark:text-slate-200 font-medium leading-relaxed pt-0.5">
-                  {step}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Ideal For Section */}
-        <div className="mt-10 bg-slate-100/70 dark:bg-slate-900/60 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-4">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            Karakteristik Perusahaan yang Cocok Menggunakan Modul Ini
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {product.idealFor.map((item) => (
-              <div
-                key={item}
-                className="p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 text-xs flex items-start gap-2"
-              >
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-slate-700 dark:text-slate-200 font-medium">{item}</span>
-              </div>
-            ))}
+        {/* Bottom CTA Banner */}
+        <div className="p-8 rounded-3xl bg-slate-900 text-white border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+          <div className="space-y-1.5 text-center sm:text-left">
+            <h3 className="text-xl font-bold text-white">
+              Siap Menguji Coba Modul {currentSuite.title}?
+            </h3>
+            <p className="text-xs text-slate-400">
+              Dapatkan demonstrasi interaktif bersama konsultan fungsional kami.
+            </p>
           </div>
-        </div>
-
-        {/* Bottom CTA Box */}
-        <div className="mt-12 p-8 bg-[#0B2447] dark:bg-[#111D38] rounded-xl text-white space-y-4 text-center">
-          <h3 className="text-2xl font-bold">
-            Ingin melihat simulasi data modul {product.name}?
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-200 max-w-lg mx-auto leading-relaxed">
-            Jadwalkan sesi demo 45 menit bersama konsultan spesialis industri kami untuk mendiskusikan alur persetujuan dan format cetak perusahaan Anda.
-          </p>
-          <div className="pt-2">
-            <a
-              href="/demo"
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate('/demo');
-              }}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold bg-white text-[#0B2447] hover:bg-slate-100 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300 transition-colors shadow-sm"
-            >
-              Jadwalkan demo sekarang
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
+          <button
+            onClick={() => onOpenConsultation(currentSuite.category)}
+            className="px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm transition shrink-0 active:scale-95"
+          >
+            Jadwalkan Konsultasi Sekarang
+          </button>
         </div>
       </div>
     </div>
   );
-}
+};

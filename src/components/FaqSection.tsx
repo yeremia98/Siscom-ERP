@@ -1,145 +1,101 @@
 import React, { useState } from 'react';
-import { FAQ_ITEMS } from '../content/faq';
-import { ChevronDown, Search, HelpCircle, PhoneCall } from 'lucide-react';
-import { COMPANY_DATA } from '../content/company';
+import { ENTERPRISE_FAQS } from '../data/erpData';
+import { HelpCircle, ChevronDown, Search, ArrowRight, ShieldCheck, Phone } from 'lucide-react';
 
 interface FaqSectionProps {
   onNavigate: (route: string) => void;
+  onOpenConsultation?: (sector?: string) => void;
 }
 
-export function FaqSection({ onNavigate }: FaqSectionProps) {
-  const [openId, setOpenId] = useState<string | null>(FAQ_ITEMS[0]?.id || null);
+export const FaqSection: React.FC<FaqSectionProps> = ({ onNavigate, onOpenConsultation }) => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const categories = ['all', ...Array.from(new Set(FAQ_ITEMS.map((item) => item.category)))];
+  const filteredFaqs = ENTERPRISE_FAQS.filter((faq) =>
+    faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const filteredFaqs = FAQ_ITEMS.filter((item) => {
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
-    const matchesSearch =
-      item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.answer.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
-  const toggleItem = (id: string) => {
-    setOpenId(openId === id ? null : id);
+  const toggleAccordion = (idx: number) => {
+    setOpenIndex(openIndex === idx ? null : idx);
   };
 
   return (
-    <section id="faq" className="py-20 border-b border-slate-200 dark:border-slate-800 bg-[#FAFAF7] dark:bg-[#080E1E] transition-colors">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-        <div className="space-y-3 mb-10 max-w-2xl">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#0B2447] dark:bg-amber-400"></span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Pertanyaan yang Sering Diajukan
-            </span>
+    <section id="faq" className="py-20 bg-white dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800/80 transition-colors">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/25 mb-4">
+            <HelpCircle className="w-4 h-4 text-orange-500" />
+            <span>Pertanyaan yang Sering Diajukan</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Penjelasan teknis arsitektur, kepatuhan hukum, dan biaya.
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Transparansi Arsitektur, Kepatuhan Regulasi, & Implementasi
           </h2>
-          <p className="text-base text-slate-600 dark:text-slate-300">
-            Jawaban lugas atas evaluasi CFO, manajer operasional, dan pimpinan IT sebelum memutuskan pengadaan sistem ERP.
+          <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400 font-normal">
+            Jawaban lugas dan mendalam untuk pertimbangan Direksi, CFO, dan Manajer IT perusahaan Anda.
           </p>
         </div>
 
-        {/* Filter & Search Bar */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8 items-stretch sm:items-center justify-between">
-          <div className="flex flex-wrap gap-1.5">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  selectedCategory === cat
-                    ? 'bg-[#0B2447] text-white dark:bg-amber-400 dark:text-slate-950 font-semibold'
-                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100'
-                }`}
+        {/* Search Bar */}
+        <div className="relative mb-8">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cari topik FAQ (misal: Odoo, Bea Cukai, On-Premise, UU PDP, durasi)..."
+            className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all placeholder:text-slate-400"
+          />
+        </div>
+
+        {/* Accordion List */}
+        <div className="space-y-3.5">
+          {filteredFaqs.map((faq, idx) => {
+            const isOpen = openIndex === idx;
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 overflow-hidden shadow-xs transition-all"
               >
-                {cat === 'all' ? 'Semua topik' : cat}
-              </button>
-            ))}
-          </div>
-
-          <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Cari pertanyaan..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-lg text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#0B2447] dark:focus:border-amber-400"
-            />
-          </div>
-        </div>
-
-        {/* FAQ Accordion */}
-        <div className="space-y-3 max-w-4xl">
-          {filteredFaqs.length === 0 ? (
-            <div className="p-8 text-center text-sm text-slate-500 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
-              Tidak ada pertanyaan yang sesuai dengan kata kunci pencarian.
-            </div>
-          ) : (
-            filteredFaqs.map((faq) => {
-              const isOpen = openId === faq.id;
-              return (
-                <div
-                  key={faq.id}
-                  className="bg-white dark:bg-[#111D38] rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors"
+                <button
+                  onClick={() => toggleAccordion(idx)}
+                  className="w-full px-6 py-4.5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
                 >
-                  <button
-                    onClick={() => toggleItem(faq.id)}
-                    className="w-full p-5 text-left flex items-start justify-between gap-4 hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors focus-visible:outline-2 focus-visible:outline-[#0B2447]"
-                    aria-expanded={isOpen}
-                  >
-                    <div className="space-y-1">
-                      <span className="text-[11px] font-mono text-slate-400 block uppercase">
-                        {faq.category}
-                      </span>
-                      <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">
-                        {faq.question}
-                      </h3>
-                    </div>
-                    <ChevronDown
-                      className={`w-5 h-5 text-slate-400 shrink-0 mt-1 transition-transform ${
-                        isOpen ? 'rotate-180 text-[#0B2447] dark:text-amber-400' : ''
-                      }`}
-                    />
-                  </button>
+                  <span className="leading-snug">{faq.question}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-slate-400 transition-transform duration-200 shrink-0 ${
+                      isOpen ? 'rotate-180 text-orange-500' : ''
+                    }`}
+                  />
+                </button>
 
-                  {isOpen && (
-                    <div className="px-5 pb-5 pt-1 border-t border-slate-100 dark:border-slate-800 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              );
-            })
-          )}
+                {isOpen && (
+                  <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal border-t border-slate-100 dark:border-slate-800/60 animate-in fade-in duration-150">
+                    <p>{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Still have questions banner */}
-        <div className="mt-10 p-6 bg-slate-100/70 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-4xl">
-          <div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-              Punya pertanyaan spesifik mengenai SOP internal perusahaan Anda?
-            </h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Konsultan teknis kami siap membedah kesesuaian dokumen dan alur approval Anda.
-            </p>
+        {/* Bottom Helpdesk Banner */}
+        <div className="mt-10 p-5 rounded-2xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-2.5 text-slate-700 dark:text-slate-300">
+            <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+            <span>Punya pertanyaan teknis spesifik mengenai alur bisnis perusahaan Anda?</span>
           </div>
-          <a
-            href={`https://wa.me/62${COMPANY_DATA.whatsappPrimary.replace(/[-+ ]/g, '').replace(/^0/, '')}?text=Halo%20SISCOM,%20saya%20ingin%20konsultasi%20mengenai%20kesesuaian%20modul%20ERP.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-50 shrink-0"
-          >
-            <PhoneCall className="w-3.5 h-3.5" />
-            Tanya tim konsultan via WhatsApp
-          </a>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() => onNavigate('/faq')}
+              className="text-orange-600 dark:text-orange-400 font-bold hover:underline"
+            >
+              Buka Halaman FAQ Lengkap &rarr;
+            </button>
+          </div>
         </div>
       </div>
     </section>
   );
-}
+};

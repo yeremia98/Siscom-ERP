@@ -2,31 +2,17 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Swiss Minimalist B2B Theme Configuration */
+/* Enterprise Theme Font and Color Variables */
 :root {
   --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
-
-  --color-brand-900: #0B2447;
-  --color-brand-800: #123466;
-  --color-brand-surface: #EBF2FA;
-  --color-neutral-bg: #FAFAF7;
-  --color-surface-muted: #F1F1EC;
-  --color-border-subtle: #E5E7EB;
 }
 
 html {
   font-family: var(--font-body);
-  background-color: var(--color-neutral-bg);
-  color: #111827;
   transition: background-color 0.2s ease, color 0.2s ease;
   scroll-behavior: smooth;
-}
-
-html.dark {
-  background-color: #080E1E;
-  color: #F3F4F6;
 }
 
 body {
@@ -44,7 +30,7 @@ code, kbd, samp, pre, .font-mono {
   font-family: var(--font-mono);
 }
 
-/* Custom scrollbar for data tables */
+/* Custom scrollbar for enterprise usability */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -61,4 +47,63 @@ code, kbd, samp, pre, .font-mono {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(107, 114, 128, 0.6);
+}
+
+/* Mascot 3D floating and glowing animations */
+@keyframes mascot-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes mascot-shadow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(0.85);
+    opacity: 0.22;
+  }
+}
+
+@keyframes antenna-glow {
+  0%, 100% {
+    opacity: 0.25;
+    transform: translate(-50%, 0) scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: translate(-50%, 0) scale(1.15);
+  }
+}
+
+@keyframes pulse-led {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.animate-mascot-float {
+  animation: mascot-float 3.5s ease-in-out infinite;
+}
+
+.animate-mascot-shadow {
+  animation: mascot-shadow 3.5s ease-in-out infinite;
+}
+
+.animate-antenna-glow {
+  animation: antenna-glow 2.5s ease-in-out infinite;
+}
+
+.animate-pulse-led {
+  animation: pulse-led 1.8s ease-in-out infinite;
 }

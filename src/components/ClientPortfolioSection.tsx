@@ -8,7 +8,7 @@ interface ClientPortfolioSectionProps {
 
 export const ClientPortfolioSection: React.FC<ClientPortfolioSectionProps> = ({ onOpenConsultation }) => {
   return (
-    <section className="py-20 px-4 sm:px-6 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800/80 transition-colors">
+    <section id="klien" className="py-20 px-4 sm:px-6 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800/80 transition-colors">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">

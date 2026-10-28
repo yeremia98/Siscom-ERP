@@ -1,29 +1,27 @@
 /**
  * SISCOM ERP (siscom.co.id) SPA Main Application
- * Adheres strictly to Swiss/Minimalism B2B SaaS architecture and anti-AI-slop rules.
+ * Enterprise Grade Prototype with 3D Mascot, Dark/Light Theme Switching,
+ * Verified Corporate Data, Interactive Multi-Step Consultation, and Full Modular Architecture.
  */
 
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { ModulesBento } from './components/ModulesBento';
-import { SegmentSelector } from './components/SegmentSelector';
-import { ImplementationTimeline } from './components/ImplementationTimeline';
-import { DeploymentComparison } from './components/DeploymentComparison';
-import { ClientGrid } from './components/ClientGrid';
+import { Stats } from './components/Stats';
+import { ModulesSection } from './components/ModulesSection';
+import { CapabilitiesSection } from './components/CapabilitiesSection';
+import { MethodologySection } from './components/MethodologySection';
+import { ClientPortfolioSection } from './components/ClientPortfolioSection';
+import { SecurityCompliance } from './components/SecurityCompliance';
 import { FaqSection } from './components/FaqSection';
+import { CallToAction } from './components/CallToAction';
 import { Footer } from './components/Footer';
-import { DemoPage } from './components/DemoPage';
-import { EstimasiPage } from './components/EstimasiPage';
-import { VerifikasiPage } from './components/VerifikasiPage';
+import { FloatingWidgets } from './components/FloatingWidgets';
+import { ConsultationModal } from './components/ConsultationModal';
 import { ProductDetailPage } from './components/ProductDetailPage';
-import { IndustriPage } from './components/IndustriPage';
-import { LayananPage } from './components/LayananPage';
-import { KlienPage } from './components/KlienPage';
-import { NotFoundPage } from './components/NotFoundPage';
-import { MessageSquare, PhoneCall } from 'lucide-react';
-import { COMPANY_DATA } from './content/company';
+import { DedicatedBlogPage } from './components/DedicatedBlogPage';
+import { DedicatedFaqPage } from './components/DedicatedFaqPage';
 
 function AppContent() {
   const [currentRoute, setCurrentRoute] = useState<string>(() => {
@@ -34,6 +32,9 @@ function AppContent() {
     if (hash && hash.startsWith('/')) return hash;
     return '/';
   });
+
+  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+  const [consultationSector, setConsultationSector] = useState<string | undefined>(undefined);
 
   // Handle browser popstate navigation (Back / Forward)
   useEffect(() => {
@@ -47,10 +48,20 @@ function AppContent() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  const openConsultation = (sector?: string) => {
+    setConsultationSector(sector);
+    setIsConsultationOpen(true);
+  };
+
+  const closeConsultation = () => {
+    setIsConsultationOpen(false);
+    setConsultationSector(undefined);
+  };
+
   const handleNavigate = (route: string) => {
     // If it's a section anchor on home page
-    if (route.startsWith('/#')) {
-      const anchorId = route.replace('/#', '');
+    if (route.startsWith('#') || route.startsWith('/#')) {
+      const anchorId = route.replace('/#', '').replace('#', '');
       if (currentRoute !== '/') {
         setCurrentRoute('/');
         try {
@@ -82,70 +93,124 @@ function AppContent() {
     if (currentRoute === '/' || currentRoute === '') {
       return (
         <main>
-          <Hero onNavigate={handleNavigate} />
-          <ModulesBento onNavigate={handleNavigate} />
-          <SegmentSelector onNavigate={handleNavigate} />
-          <ImplementationTimeline />
-          <DeploymentComparison />
-          <ClientGrid onNavigate={handleNavigate} />
-          <FaqSection onNavigate={handleNavigate} />
+          <Hero 
+            onNavigate={handleNavigate} 
+            onOpenConsultation={(sector) => openConsultation(sector)} 
+          />
+          <Stats />
+          <ModulesSection 
+            onOpenConsultation={(sector) => openConsultation(sector)} 
+          />
+          <CapabilitiesSection 
+            onOpenConsultation={() => openConsultation()} 
+          />
+          <MethodologySection 
+            onOpenConsultation={() => openConsultation()} 
+          />
+          <ClientPortfolioSection 
+            onOpenConsultation={(sector) => openConsultation(sector)} 
+          />
+          <SecurityCompliance />
+          <FaqSection 
+            onNavigate={handleNavigate} 
+            onOpenConsultation={(sector) => openConsultation(sector)} 
+          />
+          <CallToAction 
+            onOpenConsultation={() => openConsultation()} 
+          />
         </main>
       );
     }
 
-    if (currentRoute.startsWith('/produk/')) {
-      const slug = currentRoute.replace('/produk/', '');
-      return <ProductDetailPage slug={slug} onNavigate={handleNavigate} />;
+    if (currentRoute.startsWith('/product/')) {
+      const slug = currentRoute.replace('/product/', '');
+      return (
+        <ProductDetailPage 
+          slug={slug} 
+          onNavigate={handleNavigate} 
+          onOpenConsultation={(sector) => openConsultation(sector)} 
+        />
+      );
     }
 
-    if (currentRoute === '/industri') {
-      return <IndustriPage onNavigate={handleNavigate} />;
+    if (currentRoute === '/blog') {
+      return (
+        <DedicatedBlogPage 
+          onNavigate={handleNavigate} 
+          onOpenConsultation={(sector) => openConsultation(sector)} 
+        />
+      );
     }
 
-    if (currentRoute === '/layanan') {
-      return <LayananPage onNavigate={handleNavigate} />;
+    if (currentRoute === '/faq') {
+      return (
+        <DedicatedFaqPage 
+          onNavigate={handleNavigate} 
+          onOpenConsultation={(sector) => openConsultation(sector)} 
+        />
+      );
     }
 
-    if (currentRoute === '/klien') {
-      return <KlienPage onNavigate={handleNavigate} />;
-    }
-
-    if (currentRoute === '/demo') {
-      return <DemoPage onNavigate={handleNavigate} />;
-    }
-
-    if (currentRoute === '/estimasi') {
-      return <EstimasiPage onNavigate={handleNavigate} />;
-    }
-
-    if (currentRoute === '/verifikasi') {
-      return <VerifikasiPage onNavigate={handleNavigate} />;
-    }
-
-    return <NotFoundPage onNavigate={handleNavigate} />;
+    // Default fallback to home
+    return (
+      <main>
+        <Hero 
+          onNavigate={handleNavigate} 
+          onOpenConsultation={(sector) => openConsultation(sector)} 
+        />
+        <Stats />
+        <ModulesSection 
+          onOpenConsultation={(sector) => openConsultation(sector)} 
+        />
+        <CapabilitiesSection 
+          onOpenConsultation={() => openConsultation()} 
+        />
+        <MethodologySection 
+          onOpenConsultation={() => openConsultation()} 
+        />
+        <ClientPortfolioSection 
+          onOpenConsultation={(sector) => openConsultation(sector)} 
+        />
+        <SecurityCompliance />
+        <FaqSection 
+          onNavigate={handleNavigate} 
+          onOpenConsultation={(sector) => openConsultation(sector)} 
+        />
+        <CallToAction 
+          onOpenConsultation={() => openConsultation()} 
+        />
+      </main>
+    );
   };
 
-  const whatsappUrl = `https://wa.me/62${COMPANY_DATA.whatsappPrimary.replace(/[-+ ]/g, '').replace(/^0/, '')}?text=Halo%20SISCOM,%20saya%20ingin%20berkonsultasi%20mengenai%20kebutuhan%20software%20ERP.`;
-
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAF7] dark:bg-[#080E1E] text-slate-900 dark:text-slate-100 antialiased font-sans selection:bg-[#0B2447] selection:text-white dark:selection:bg-amber-400 dark:selection:text-slate-950">
-      <Header currentRoute={currentRoute} onNavigate={handleNavigate} />
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased font-sans selection:bg-orange-500 selection:text-white transition-colors duration-200">
+      <Header 
+        currentRoute={currentRoute} 
+        onNavigate={handleNavigate} 
+        onOpenConsultation={(sector) => openConsultation(sector)} 
+      />
 
-      <div className="flex-1">{renderCurrentRoute()}</div>
+      <div className="flex-1">
+        {renderCurrentRoute()}
+      </div>
 
-      <Footer onNavigate={handleNavigate} />
+      <Footer 
+        onNavigate={handleNavigate} 
+        onOpenConsultation={(sector) => openConsultation(sector)} 
+      />
 
-      {/* Single, Minimalist Floating WhatsApp Action (No mascot, no fake bot) */}
-      <a
-        href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-4 py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-lg hover:shadow-xl transition-all focus-visible:outline-2 focus-visible:outline-emerald-500"
-        aria-label="Konsultasi WhatsApp Resmi SISCOM"
-      >
-        <PhoneCall className="w-4 h-4" />
-        <span className="hidden sm:inline">WhatsApp Konsultasi</span>
-      </a>
+      {/* Floating Action Speed Dial Widget */}
+      <FloatingWidgets 
+        onOpenConsultation={(sector) => openConsultation(sector)} 
+      />
+
+      {/* Interactive Multi-Step Consultation & Lead Scoring Modal */}
+      <ConsultationModal 
+        isOpen={isConsultationOpen} 
+        onClose={closeConsultation} 
+        prefilledSector={consultationSector} 
+      />
     </div>
   );
 }
